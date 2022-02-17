@@ -1,0 +1,1 @@
+draw_surface(surf.getSurfaceID(), 0, 0);
