@@ -1,1 +1,1 @@
-draw_surface(surf.getSurfaceID(), 0, 0);
+draw_surface(surf.GetSurfaceID(), 0, 0);

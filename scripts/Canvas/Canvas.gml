@@ -2,18 +2,26 @@
 #macro CANVAS_VERSION "1.0.0"
 show_debug_message("Canvas " + CANVAS_VERSION + " initalized! Created by " + CANVAS_CREDITS);
 
-/// @func canvas
+enum CanvasStatus {
+	NO_DATA,
+	IN_USE,
+	HAS_DATA,
+	HAS_DATA_CACHED
+}
+
+/// @func Canvas
 /// @param width
 /// @param height
-function canvas(_width, _height) constructor {
+function Canvas(_width, _height) constructor {
 		width = _width;
 		height = _height;
 		surface = -1;
 		buffer = -1;
 		cacheBuffer = -1;
 		isLoaded = false;
+		status = CanvasStatus.NO_DATA;
 		
-		static start = function() {
+		static Start = function() {
 			if !(surface_exists(surface)) {
 				if !(buffer_exists(buffer)) {
 					__surfaceCreate();
@@ -21,14 +29,15 @@ function canvas(_width, _height) constructor {
 					draw_clear_alpha(0, 0);
 					surface_reset_target();
 				} else {
-					checkSurface();
+					CheckSurface();
 				}
 			}
 			
 			surface_set_target(surface);
+			status = CanvasStatus.IN_USE;
 		}
 		
-		static finish = function() {
+		static Finish = function() {
 			surface_reset_target();
 			if !(buffer_exists(buffer)) {
 				__init();
@@ -36,20 +45,21 @@ function canvas(_width, _height) constructor {
 			
 			buffer_get_surface(buffer, surface, 0);
 			isLoaded = true;
+			status = CanvasStatus.HAS_DATA;
 		}
 		
 		static __init = function() {
 			if !(buffer_exists(buffer)) {
 				if (buffer_exists(cacheBuffer)) {
 					// Lets decompress it
-					__restoreFromCache();
+					Restore();
 				} else {
 					buffer = buffer_create(width * height * 4, buffer_fixed, 4);	
 				}
 			}
 		}
 		
-		static free = function() {
+		static Free = function() {
 			if (buffer_exists(buffer)) {
 				buffer_delete(buffer);	
 				buffer = -1;
@@ -66,27 +76,37 @@ function canvas(_width, _height) constructor {
 			}
 			
 			isLoaded = false;
+			status = CanvasStatus.NO_DATA;
 		}
 		
-		static checkSurface = function() {
+		static CheckSurface = function() {
 			if (buffer_exists(buffer)) || (buffer_exists(cacheBuffer)) {
 				if !(surface_exists(surface)) {
 					__surfaceCreate();
 					if (buffer_exists(cacheBuffer)) {
-						restore();	
+						Restore();	
 					}
 					buffer_set_surface(buffer,surface,0);
 				}
 			}
 		}
 		
-		static getSurfaceID = function() {
-			checkSurface();
+		static GetSurfaceID = function() {
+			CheckSurface();
 			return surface;
 		}
 		
-		static getBufferID = function() {
-			return (buffer_exists(cacheBuffer) ? cacheBuffer : (buffer_exists(buffer) ? buffer : -1));
+		static GetBufferContents = function() {
+			var _bufferToCopy = (buffer_exists(cacheBuffer) ? cacheBuffer : (buffer_exists(buffer) ? buffer : -1));
+			if (_bufferToCopy == -1) {
+				return -1;	
+			}
+			
+			// Send copied buffer as a result
+			var _size = buffer_get_size(_bufferToCopy);
+			var _buffer = buffer_create(_size, buffer_fixed, 1);
+			buffer_copy(_bufferToCopy, 0, _size, _buffer, 0);
+			return _buffer;
 		}
 			
 		static __surfaceCreate = function() {
@@ -95,7 +115,11 @@ function canvas(_width, _height) constructor {
 			}
 		}
 		
-		static cache = function() {
+		static GetStatus = function() {
+			return status;	
+		}
+		
+		static Cache = function() {
 			if !(buffer_exists(cacheBuffer)) {
 				if (buffer_exists(buffer)) {
 					// Have to do this due to a bug with buffer_compress. 
@@ -115,9 +139,11 @@ function canvas(_width, _height) constructor {
 				}
 				isLoaded = false;
 			}
+			
+			status = CanvasStatus.HAS_DATA_CACHED;
 		}
 			
-		static restore = function() {
+		static Restore = function() {
 			if !(buffer_exists(buffer)) && (buffer_exists(cacheBuffer)) {
 				var _dbuff = buffer_decompress(cacheBuffer);
 				if !(_dbuff < 0) {
@@ -125,7 +151,7 @@ function canvas(_width, _height) constructor {
 					buffer_delete(cacheBuffer);
 					cacheBuffer = -1;
 					// Restore surface
-					checkSurface();
+					CheckSurface();
 					
 					// It has loaded successfully!
 					isLoaded = true;
@@ -133,5 +159,6 @@ function canvas(_width, _height) constructor {
 					show_error("Canvas: Something terrible has gone wrong with unloading cache data!\nReport it to TabularElf at once!", true);	
 				}
 			}
+			status = CanvasStatus.HAS_DATA;
 		}
 }
