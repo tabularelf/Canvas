@@ -1,5 +1,5 @@
-#macro CANVAS_CREDITS "TabularElf - https://tabelf.link/"
-#macro CANVAS_VERSION "1.0.0"
+#macro CANVAS_CREDITS "@TabularElf - https://tabelf.link/"
+#macro CANVAS_VERSION "1.1.0"
 show_debug_message("Canvas " + CANVAS_VERSION + " initalized! Created by " + CANVAS_CREDITS);
 
 enum CanvasStatus {
