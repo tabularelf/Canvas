@@ -2,6 +2,8 @@
 #macro CANVAS_VERSION "1.1.0"
 show_debug_message("Canvas " + CANVAS_VERSION + " initalized! Created by " + CANVAS_CREDITS);
 
+#macro __CANVAS_HEADER_SIZE 5
+
 enum CanvasStatus {
 	NO_DATA,
 	IN_USE,
@@ -138,13 +140,12 @@ function Canvas(_width, _height) constructor {
 			}
 			
 			// Send copied buffer as a result
-			var _headerSize = 4+4+1; // Width + height + isCompressed
 			var _size = buffer_get_size(_bufferToCopy);
-			var _buffer = buffer_create(_size+_headerSize, buffer_fixed, 1);
+			var _buffer = buffer_create(_size+__CANVAS_HEADER_SIZE, buffer_fixed, 1);
 			buffer_write(_buffer, buffer_bool, GetStatus() == CanvasStatus.HAS_DATA_CACHED ? true : false);
-			buffer_write(_buffer, buffer_u32, __width);
-			buffer_write(_buffer, buffer_u32, __height);
-			buffer_copy(_bufferToCopy, 0, _size, _buffer, _headerSize);
+			buffer_write(_buffer, buffer_u16, __width);
+			buffer_write(_buffer, buffer_u16, __height);
+			buffer_copy(_bufferToCopy, 0, _size, _buffer, __CANVAS_HEADER_SIZE);
 			/* Feather ignore once GM1035 */
 			return _buffer;
 		}
@@ -152,8 +153,8 @@ function Canvas(_width, _height) constructor {
 		static SetBufferContents = function(_cvBuff) {
 			buffer_seek(_cvBuff, buffer_seek_start, 0);
 			var _isCompressed = buffer_read(_cvBuff, buffer_bool);
-			var _width = buffer_read(_cvBuff, buffer_u32);
-			var _height = buffer_read(_cvBuff, buffer_u32);
+			var _width = buffer_read(_cvBuff, buffer_u16);
+			var _height = buffer_read(_cvBuff, buffer_u16);
 			
 			if ((__width != _width) || (__height != _height)) {
 				__width = _width;
@@ -164,7 +165,7 @@ function Canvas(_width, _height) constructor {
 			}
 			
 			var _buff = buffer_create(1, buffer_grow, 1);
-			buffer_copy(_cvBuff, 9, buffer_get_size(_cvBuff), _buff, 0);
+			buffer_copy(_cvBuff, __CANVAS_HEADER_SIZE, buffer_get_size(_cvBuff), _buff, 0);
 			
 			if (_isCompressed) && (GetStatus() != CanvasStatus.HAS_DATA_CACHED) {
 				var _dbuff = buffer_decompress(_buff);
