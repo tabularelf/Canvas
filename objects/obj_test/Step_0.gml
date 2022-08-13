@@ -8,6 +8,24 @@ if (keyboard_check(vk_control)) {
 	draw_rectangle_colour(32,32,412,412, make_colour_hsv(_offset  mod 256, 255, 255), make_colour_hsv(_offset * 20  mod 256, 255, 255), make_colour_hsv(_offset * 30  mod 256, 255, 255), make_colour_hsv(_offset * 40  mod 256, 255, 255), false);
 }
 
+if (keyboard_check_released(ord("E"))) {
+	if (keyboard_check(vk_space)) {
+		surf.Cache();	
+	}
+	myBuffer = surf.GetBufferContents();
+}
+
+if (keyboard_check_released(ord("W"))) {
+	surf.Resize(1024, 1024);	
+	surf.Start();
+	draw_rectangle_colour(32,32,surf.GetWidth(),surf.GetHeight(), c_red, c_green, c_blue, c_yellow, false);
+	surf.Finish();
+}
+
+if (keyboard_check_released(ord("Q"))) {
+	surf.SetBufferContents(myBuffer);
+}
+
 __prevStatus = surf.GetStatus();
 if (surf.GetStatus() == CanvasStatus.IN_USE) {
 	surf.Finish();	
