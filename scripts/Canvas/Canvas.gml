@@ -1,5 +1,5 @@
 #macro CANVAS_CREDITS "@TabularElf - https://tabelf.link/"
-#macro CANVAS_VERSION "1.1.0"
+#macro CANVAS_VERSION "1.1.1"
 show_debug_message("Canvas " + CANVAS_VERSION + " initalized! Created by " + CANVAS_CREDITS);
 
 #macro __CANVAS_HEADER_SIZE 5
@@ -21,6 +21,7 @@ function Canvas(_width, _height) constructor {
 		__buffer = -1;
 		__cacheBuffer = -1;
 		__status = CanvasStatus.NO_DATA;
+		__writeToCache = true;
 		
 		static Start = function() {
 			if !(surface_exists(__surface)) {
@@ -45,7 +46,9 @@ function Canvas(_width, _height) constructor {
 				__init();
 			}
 			
-			buffer_get_surface(__buffer, __surface, 0);
+			if (__writeToCache) {
+				buffer_get_surface(__buffer, __surface, 0);
+			}
 			__status = CanvasStatus.HAS_DATA;
 			return self;
 		}
@@ -240,6 +243,18 @@ function Canvas(_width, _height) constructor {
 				}
 			}
 			__status = CanvasStatus.HAS_DATA;
+			return self;
+		}
+		
+		static WriteToCache = function(_bool) {
+			__writeToCache = _bool;	
+			return self;
+		}
+		
+		static FreeSurface = function() {
+			if (surface_exists(__surface)) {
+				surface_free(__surface);	
+			}
 			return self;
 		}
 }

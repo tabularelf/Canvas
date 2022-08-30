@@ -12,6 +12,9 @@ if (keyboard_check_released(ord("E"))) {
 	if (keyboard_check(vk_space)) {
 		surf.Cache();	
 	}
+	if (buffer_exists(myBuffer)) {
+		buffer_delete(myBuffer);
+	}
 	myBuffer = surf.GetBufferContents();
 }
 
