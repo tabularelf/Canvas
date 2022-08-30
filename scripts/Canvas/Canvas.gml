@@ -213,13 +213,13 @@ function Canvas(_width, _height) constructor {
 					
 					// Remove main buffer
 					buffer_delete(__buffer);
-					/* Feather ignore once GM1013 */
+					/* Feather ignore once GM1043 */
 					__buffer = -1;
 					
 					// Remove surface
 					if (surface_exists(__surface)) {
 						surface_free(__surface);	
-						/* Feather ignore once GM1013 */
+						/* Feather ignore once GM1043 */
 						__surface = -1;
 					}
 				}
@@ -235,6 +235,7 @@ function Canvas(_width, _height) constructor {
 				if (buffer_exists(_dbuff)) {
 					__buffer = _dbuff;
 					buffer_delete(__cacheBuffer);
+					/* Feather ignore once GM1043 */
 					__cacheBuffer = -1;
 					// Restore surface
 					CheckSurface();
