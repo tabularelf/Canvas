@@ -1,6 +1,6 @@
-#macro CANVAS_CREDITS "@TabularElf - https://tabelf.link/"
-#macro CANVAS_VERSION "1.1.1"
-show_debug_message("Canvas " + CANVAS_VERSION + " initalized! Created by " + CANVAS_CREDITS);
+#macro __CANVAS_CREDITS "@TabularElf - https://tabelf.link/"
+#macro __CANVAS_VERSION "1.1.2"
+show_debug_message("Canvas " + __CANVAS_VERSION + " initalized! Created by " + __CANVAS_CREDITS);
 
 #macro __CANVAS_HEADER_SIZE 5
 
@@ -26,7 +26,7 @@ function Canvas(_width, _height) constructor {
 		static Start = function() {
 			if !(surface_exists(__surface)) {
 				if !(buffer_exists(__buffer)) {
-					__surfaceCreate();
+					__SurfaceCreate();
 					surface_set_target(__surface);
 					draw_clear_alpha(0, 0);
 					surface_reset_target();
@@ -47,9 +47,8 @@ function Canvas(_width, _height) constructor {
 			}
 			
 			if (__writeToCache) {
-				buffer_get_surface(__buffer, __surface, 0);
+				__UpdateCache();
 			}
-			__status = CanvasStatus.HAS_DATA;
 			return self;
 		}
 		
@@ -89,7 +88,7 @@ function Canvas(_width, _height) constructor {
 		static CheckSurface = function() {
 			if (buffer_exists(__buffer)) || (buffer_exists(__cacheBuffer)) {
 				if !(surface_exists(__surface)) {
-					__surfaceCreate();
+					__SurfaceCreate();
 					if (buffer_exists(__cacheBuffer)) {
 						Restore();	
 					}
@@ -182,21 +181,28 @@ function Canvas(_width, _height) constructor {
 				case CanvasStatus.NO_DATA:
 					__status = CanvasStatus.HAS_DATA;
 				case CanvasStatus.HAS_DATA:
+					buffer_delete(__buffer);
 					__buffer = _buff;
 					__refreshSurface();
 				break;
 				
 				case CanvasStatus.HAS_DATA_CACHED:
+					buffer_delete(__cacheBuffer);
 					__cacheBuffer = _buff;
 				break;
 			}
 			return self;
 		}
 			
-		static __surfaceCreate = function() {
+		static __SurfaceCreate = function() {
 			if !(surface_exists(__surface)) {
 				__surface = surface_create(__width, __height);
 			}
+		}
+		
+		static __UpdateCache = function() {
+			buffer_get_surface(__buffer, __surface, 0);
+			__status = CanvasStatus.HAS_DATA;	
 		}
 		
 		static GetStatus = function() {
@@ -249,6 +255,25 @@ function Canvas(_width, _height) constructor {
 		
 		static WriteToCache = function(_bool) {
 			__writeToCache = _bool;	
+			return self;
+		}
+		
+		static UpdateCache = function() {
+			switch(GetStatus()) {
+				case CanvasStatus.HAS_DATA_CACHED:
+					Restore();
+					__UpdateCache();
+				break;
+				case CanvasStatus.NO_DATA:
+				case CanvasStatus.HAS_DATA:
+					__UpdateCache();
+				break;
+				case CanvasStatus.IN_USE:
+					show_error("Canvas: Canvas is currently in use! Please call .Finish() before updating the cache!", true);
+				break;
+				
+				
+			}
 			return self;
 		}
 		
