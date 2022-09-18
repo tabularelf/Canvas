@@ -287,12 +287,10 @@ function Canvas(_width, _height) constructor {
 		
 		static UpdateCache = function() {
 			switch(GetStatus()) {
-				case CanvasStatus.HAS_DATA_CACHED:
-					Restore();
-					__UpdateCache();
-				break;
 				case CanvasStatus.NO_DATA:
+				case CanvasStatus.HAS_DATA_CACHED:
 					__init();
+					CheckSurface();
 				case CanvasStatus.HAS_DATA:
 					__UpdateCache();
 				break;
