@@ -1,4 +1,4 @@
-# Canvas v1.1.2
+# Canvas v1.1.3
 A surface that you can modify & keep the contents, even when the surface should've had been lost, for GameMaker Studio 2.3+!
 
 Join my Discord for any questions! https://discord.gg/ThW5exp6r4

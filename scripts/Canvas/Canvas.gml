@@ -1,5 +1,5 @@
 #macro __CANVAS_CREDITS "@TabularElf - https://tabelf.link/"
-#macro __CANVAS_VERSION "1.1.2"
+#macro __CANVAS_VERSION "1.1.3"
 show_debug_message("Canvas " + __CANVAS_VERSION + " initalized! Created by " + __CANVAS_CREDITS);
 
 #macro __CANVAS_HEADER_SIZE 5
@@ -42,13 +42,14 @@ function Canvas(_width, _height) constructor {
 		
 		static Finish = function() {
 			surface_reset_target();
-			if !(buffer_exists(__buffer)) {
-				__init();
-			}
+			__init();
 			
 			if (__writeToCache) {
 				__UpdateCache();
 			}
+			
+			__status = CanvasStatus.HAS_DATA;	
+			
 			return self;
 		}
 		
@@ -61,6 +62,28 @@ function Canvas(_width, _height) constructor {
 					__buffer = buffer_create(__width * __height * 4, buffer_fixed, 4);	
 				}
 			}
+		}
+		
+		static CopySurface = function(_surfID, _x, _y, _updateCache = __writeToCache) {
+			if (!surface_exists(_surfID)) {
+				show_error("Canvas: Surface " + string(_surfID) + " doesn't exist!", true);	
+			}
+			
+			var _width = surface_get_width(_surfID);
+			var _height = surface_get_height(_surfID);
+			
+			if (__width != _width) || (__height != _height) {
+				Resize(_width, _height);	
+			}
+			
+			__init();
+			CheckSurface();
+			
+			surface_copy(__surface, _x, _y, _surfID);
+			if (_updateCache) {
+				__UpdateCache();
+			}
+			return self;
 		}
 		
 		static Free = function() {
@@ -97,7 +120,10 @@ function Canvas(_width, _height) constructor {
 			}
 		}
 		
-		static Resize = function(_width, _height) {
+		static Resize = function(_width, _height, _keepData = false) {
+			
+			if (__width == _width) && (__height == _height) return self;
+			
 			if (buffer_exists(__buffer)) {
 				buffer_delete(__buffer);
 			}
@@ -112,6 +138,7 @@ function Canvas(_width, _height) constructor {
 			
 			__width = _width;
 			__height = _height;
+			
 			__status = CanvasStatus.NO_DATA;
 			
 			return self;
@@ -265,6 +292,7 @@ function Canvas(_width, _height) constructor {
 					__UpdateCache();
 				break;
 				case CanvasStatus.NO_DATA:
+					__init();
 				case CanvasStatus.HAS_DATA:
 					__UpdateCache();
 				break;

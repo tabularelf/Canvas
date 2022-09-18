@@ -2,6 +2,7 @@
   "resources": [
     {"id":{"name":"obj_test","path":"objects/obj_test/obj_test.yy",},"order":2,},
     {"id":{"name":"Canvas","path":"scripts/Canvas/Canvas.yy",},"order":0,},
+    {"id":{"name":"obj_test_manual_write","path":"objects/obj_test_manual_write/obj_test_manual_write.yy",},"order":4,},
     {"id":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},"order":1,},
   ],
   "Options": [
