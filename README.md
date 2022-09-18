@@ -67,3 +67,6 @@ Updates the cache when called.
 
 ## `.FreeSurface()`<br>
 Fres the surface only
+
+## `.CopySurface(surfaceID, x, y, [updateCache])`<br>
+Copies a surface to Canvas's internal surface. `[updateCache]` is default to whatever `.WriteToCache()` is set.
