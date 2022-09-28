@@ -29,6 +29,10 @@ if (keyboard_check_released(ord("Q"))) {
 	surf.SetBufferContents(myBuffer);
 }
 
+if (keyboard_check_released(ord("V"))) {
+	surf.CopySurfacePart(application_surface, 524, 524, 256, 256, 128, 128, true, true);	
+}
+
 __prevStatus = surf.GetStatus();
 if (surf.GetStatus() == CanvasStatus.IN_USE) {
 	surf.Finish();	
