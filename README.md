@@ -1,7 +1,7 @@
-# Canvas v1.1.3
+# Canvas v1.1.4
 A surface that you can modify & keep the contents, even when the surface should've had been lost, for GameMaker Studio 2.3+!
 
-Join my Discord for any questions! https://discord.gg/ThW5exp6r4
+Join my Discord! https://discord.gg/ThW5exp6r4
 
 Example on usage:
 ```gml
@@ -19,8 +19,9 @@ draw_surface(surf.GetSurfaceID(), 0, 0);
 
 # Methods
 
-## `.Start()`<br>
-Similar to `surface_set_target()`, but also does some additional preparations to ensure that it can fetch the previous surface data first/initialize the surface.
+## `.Start([index])`<br>
+Similar to `surface_set_target()`, but also does some additional preparations to ensure that it can fetch the previous surface data first/initialize the surface.<br>
+If an argument is provided for [index], this will invoke `surface_set_target_ext()` instead.
 
 ## `.Finish()`<br>
 Similar to `surface_reset_target()`, but also updates the internal cache.
@@ -65,5 +66,22 @@ Determines if `.Finish()` should update the cache for you or not.
 ## `.UpdateCache()`<br>
 Updates the cache when called.
 
-## `.FreeSurface()`<br>
-Fres the surface only
+## `.Flush()`<br>
+Fres the surface only. Can be restored as usual.
+
+## `.CopySurface(surfaceID, x, y, [forceResize], [updateCache])`<br>
+Copies one surface to the Canvas surface, as per `surface_copy()`. <br>
+If `[forceResize]` is set to `true` (default is `false`), it will also resize the surface/buffer prior to copying the surface as per `x + width`, `y + height`. <br>
+If `[updateCache]` is set to `true` (default is the state of `.WriteToCache()`), it will update the cache.
+
+## `.CopySurfacePart(surfaceID, x, y, xs, ys, ws, hs, [forceResize], [updateCache])`<br>
+Same as above, except also takes in a few additional arguments for copying parts of a surface.
+
+## `.GetTexture()`<br>
+Gets the texture of the surface.
+
+## `.GetPixel(x, y)`<br>
+Gets colour data from a pixel from the buffer cache. 
+
+## `.GetPixelArray(x, y)`<br>
+Gets colour data from a pixel from the buffer cache, in the form of an array.
