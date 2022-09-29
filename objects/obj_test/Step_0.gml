@@ -30,7 +30,7 @@ if (keyboard_check_released(ord("Q"))) {
 }
 
 if (keyboard_check_released(ord("V"))) {
-	surf.CopySurfacePart(application_surface, 524, 524, 256, 256, 128, 128, true, true);	
+	surf.CopySurfacePart(application_surface, 0, 0, 0, 0, 256, 256, true, true);	
 }
 
 __prevStatus = surf.GetStatus();

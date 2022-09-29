@@ -1,4 +1,4 @@
-# Canvas v1.2.0
+# Canvas v1.2.1
 A surface that you can modify & keep the contents, even when the surface should've had been lost, for GameMaker Studio 2.3+!
 
 Join my Discord! https://discord.gg/ThW5exp6r4
@@ -32,9 +32,10 @@ Frees the underlying surface and buffers.
 ## `.CheckSurface()`<br>
 Checks up on the surface. This isn't normally needed to be called prior to calling `.GetSurfaceID()`, as this is done for you.
 
-## `.Resize(width, height)`<br>
-Sets the width and height of the Canvas.<br>
-Note: This will also free the surface/buffer context as they're now both invalid data.
+## `.Resize(width, height, [keepData])`<br>
+Sets the width and height of the Canvas. If `[keepData]` is set to true, it will also maintain the current data. <br>
+Note: This will also free the surface/buffer context as they're now both invalid data.<br>
+**Additional note**: `[keepData]` currently does not work properly on HTML5, so it has been forcedfully switched off.
 
 ## `.GetWidth()`
 Returns the set surface width/height.
