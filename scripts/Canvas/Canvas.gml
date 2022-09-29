@@ -420,4 +420,20 @@ function Canvas(_width, _height) constructor {
 			var _a = (_col >> 24) / 0xFF;
 			return [_r, _g, _b, _a];
 		}
+		
+		static Clear = function(_clearSurface = true, _clearBuffer = true) {
+			__init();
+			CheckSurface();
+			
+			if (_clearSurface) {
+				surface_set_target(__surface);	
+				draw_clear_alpha(c_black, 0);
+				surface_reset_target();
+			}
+			
+			if (_clearBuffer) {
+				buffer_fill(__buffer, 0, buffer_u8, 0, buffer_get_size(__buffer));
+			}
+			return self;
+		}
 }

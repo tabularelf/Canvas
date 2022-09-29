@@ -33,6 +33,11 @@ if (keyboard_check_released(ord("V"))) {
 	surf.CopySurfacePart(application_surface, 0, 0, 0, 0, 256, 256, true, true);	
 }
 
+if (keyboard_check_released(ord("G"))) {
+	surf.Clear();
+}
+
+
 __prevStatus = surf.GetStatus();
 if (surf.GetStatus() == CanvasStatus.IN_USE) {
 	surf.Finish();	
