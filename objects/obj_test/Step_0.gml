@@ -34,7 +34,7 @@ if (keyboard_check_released(ord("V"))) {
 }
 
 if (keyboard_check_released(ord("G"))) {
-	surf.Clear();
+	surf.Clear(true, false);
 }
 
 
