@@ -86,3 +86,6 @@ Gets colour data from a pixel from the buffer cache.
 
 ## `.GetPixelArray(x, y)`<br>
 Gets colour data from a pixel from the buffer cache, in the form of an array.
+
+## `.Clear([clearSurface], [clearBuffer])`<br>
+Clears data. Both arguments default to `true`.
