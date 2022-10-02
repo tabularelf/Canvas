@@ -30,11 +30,7 @@ function Canvas(_width, _height) constructor {
 			if (!surface_exists(__surface)) {
 				if (!buffer_exists(__buffer)) {
 					__SurfaceCreate();
-					if (_ext == -1) {
-						surface_set_target(__surface);
-					} else {
-						surface_set_target_ext(_ext, __surface);	
-					}
+					surface_set_target(__surface);
 					draw_clear_alpha(0, 0);
 					surface_reset_target();
 				} else {
@@ -42,7 +38,12 @@ function Canvas(_width, _height) constructor {
 				}
 			}
 			
-			surface_set_target(__surface);
+			if (_ext == -1) {
+				surface_set_target(__surface);
+			} else {
+				surface_set_target_ext(_ext, __surface);	
+			}
+			
 			__status = CanvasStatus.IN_USE;
 			return self;
 		}
