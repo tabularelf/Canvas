@@ -71,6 +71,29 @@ function Canvas(_width, _height) constructor {
 			}
 		}
 		
+				
+		static CopyCanvas = function(_canvas, _x, _y, _forceResize = false, _updateCache = __writeToCache) {
+			if (!CanvasIsCanvas(_canvas)) {
+				return self;	
+			}
+			
+			CopySurface(_canvas.GetSurfaceID(), _x, _y, _forceResize, _updateCache);
+			return self;
+		}
+		
+		static CopyCanvasPart = function(_canvas, _x, _y, _xs, _ys, _ws, _hs, _forceResize = false, _updateCache = __writeToCache) {
+			if (!CanvasIsCanvas(_canvas)) {
+				return self;	
+			}
+			
+			CopySurfacePart(_canvas.GetSurfaceID(), _x, _y, _xs, _ys, _ws, _hs, _forceResize, _updateCache);
+			return self;
+		}
+		
+		static IsAvailable = function() {
+			return __status == CanvasStatus.HAS_DATA;	
+		}
+		
 		static CopySurface = function(_surfID, _x, _y, _forceResize = false, _updateCache = __writeToCache) {
 			if (!surface_exists(_surfID)) {
 				show_error("Canvas: Surface " + string(_surfID) + " doesn't exist!", true);	
@@ -141,7 +164,7 @@ function Canvas(_width, _height) constructor {
 			
 			return self;
 		}
-		
+			
 		static Free = function() {
 			if (buffer_exists(__buffer)) {
 				buffer_delete(__buffer);	
@@ -173,7 +196,7 @@ function Canvas(_width, _height) constructor {
 					}
 					buffer_set_surface(__buffer,__surface, 0);
 				}
-			}
+			} 
 		}
 		
 		static Resize = function(_width, _height, _keepData = false) {
@@ -238,6 +261,7 @@ function Canvas(_width, _height) constructor {
 		}
 		
 		static GetSurfaceID = function() {
+			if (__status == CanvasStatus.NO_DATA) return -1;
 			CheckSurface();
 			return __surface;
 		}
@@ -435,6 +459,60 @@ function Canvas(_width, _height) constructor {
 			if (_clearBuffer) {
 				buffer_fill(__buffer, 0, buffer_u8, 0, buffer_get_size(__buffer));
 			}
+			return self;
+		}
+		
+		static Draw = function(_x, _y) {
+			CheckSurface();
+			draw_surface(__surface, _x, _y);
+			return self;
+		}
+		
+		static DrawExt = function(_x, _y, _xscale, _yscale, _rot, _col, _alpha) {
+			CheckSurface();
+			draw_surface_ext(__surface, _x, _y, _xscale, _yscale, _rot, _col, _alpha);
+			return self;
+		}
+		
+		static DrawTiled = function(_x, _y) {
+			CheckSurface();
+			draw_surface_tiled(__surface, _x, _y);
+			return self;
+		}
+		
+		static DrawTiledExt = function(_x, _y) {
+			CheckSurface();
+			draw_surface_tiled_ext(__surface, _x, _y, _xscale, _yscale, _col, _alpha);
+			return self;
+		}
+		
+		static DrawPart = function(_left, _top, _width, _height, _x, _y) {
+			CheckSurface();
+			draw_surface_part(__surface, _left, _top, _width, _height, _x, _y);
+			return self;
+		}
+		
+		static DrawPartExt = function(_left, _top, _width, _height, _x, _y, _xscale, _yscale, _col, _alpha) {
+			CheckSurface();
+			draw_surface_part_ext(__surface, _left, _top, _width, _height, _x, _y, _xscale, _yscale, _col, _alpha);
+			return self;
+		}
+		
+		static DrawStretched = function(_x, _y, _width, _height) {
+			CheckSurface();
+			draw_surface_stretched(__surface, _x, _y, _width, _height);
+			return self;
+		}
+		
+		static DrawStretchedExt = function(_x, _y, _width, _height, _col, _alpha) {
+			CheckSurface();
+			draw_surface_stretched_ext(__surface, _x, _y, _width, _height, _col, _alpha);
+			return self;
+		}
+		
+		static DrawGeneral = function(_left, _top, _width, _height, _x, _y, _xscale, _yscale, _rot, _col1, _col2, _col3, _col4, _alpha) {
+			CheckSurface();
+			draw_surface_general(__surface, _left, _top, _width, _height, _x, _y, _xscale, _yscale, _rot, _col1, _col2, _col3, _col4, _alpha);
 			return self;
 		}
 }
