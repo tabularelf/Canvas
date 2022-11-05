@@ -1,5 +1,5 @@
 #macro __CANVAS_CREDITS "@TabularElf - https://tabelf.link/"
-#macro __CANVAS_VERSION "1.2.1"
+#macro __CANVAS_VERSION "1.2.2"
 #macro __CANVAS_ON_WEB (os_browser != browser_not_a_browser)
 show_debug_message("Canvas " + __CANVAS_VERSION + " initalized! Created by " + __CANVAS_CREDITS);
 
@@ -180,6 +180,9 @@ function Canvas(_width, _height) constructor {
 			
 			if (__width == _width) && (__height == _height) return self;
 			
+			__width = _width;
+			__height = _height;
+			
 			if (!_keepData) || (__CANVAS_ON_WEB) {
 				if (buffer_exists(__buffer)) {
 					buffer_delete(__buffer);
@@ -198,8 +201,6 @@ function Canvas(_width, _height) constructor {
 			CheckSurface();
 			
 			if (_keepData) && (!__CANVAS_ON_WEB) {
-				__width = _width;
-				__height = _height;
 				
 				var _currentlyWriting = false;
 				
