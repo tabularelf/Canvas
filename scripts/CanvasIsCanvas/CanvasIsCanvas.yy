@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "Canvas",
+  "name": "CanvasIsCanvas",
   "isDnD": false,
   "isCompatibility": false,
   "parent": {

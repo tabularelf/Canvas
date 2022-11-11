@@ -9,13 +9,10 @@ if (keyboard_check(vk_control)) {
 }
 
 if (keyboard_check_released(ord("E"))) {
-	if (keyboard_check(vk_space)) {
-		surf.Cache();	
-	}
 	if (buffer_exists(myBuffer)) {
 		buffer_delete(myBuffer);
 	}
-	myBuffer = surf.GetBufferContents();
+	myBuffer = surf.GetBufferContents(true);
 }
 
 if (keyboard_check_released(ord("W"))) {
@@ -34,7 +31,7 @@ if (keyboard_check_released(ord("V"))) {
 }
 
 if (keyboard_check_released(ord("G"))) {
-	surf.Clear(true, false);
+	surf.Clear();
 }
 
 
