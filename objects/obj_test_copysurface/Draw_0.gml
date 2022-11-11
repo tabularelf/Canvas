@@ -1,1 +1,1 @@
-draw_surface(surf2.GetSurfaceID(), 0, 0);
+surf2.Draw(0, 0);

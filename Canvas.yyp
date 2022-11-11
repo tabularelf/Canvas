@@ -4,6 +4,7 @@
   "name": "Canvas",
   "resources": [
     {"id":{"name":"obj_test","path":"objects/obj_test/obj_test.yy",},"order":2,},
+    {"id":{"name":"__CanvasError","path":"scripts/__CanvasError/__CanvasError.yy",},"order":2,},
     {"id":{"name":"obj_test_copysurface","path":"objects/obj_test_copysurface/obj_test_copysurface.yy",},"order":6,},
     {"id":{"name":"obj_test_resize","path":"objects/obj_test_resize/obj_test_resize.yy",},"order":5,},
     {"id":{"name":"Canvas","path":"scripts/Canvas/Canvas.yy",},"order":0,},
