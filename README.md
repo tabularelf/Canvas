@@ -99,7 +99,7 @@ Gets colour data from a pixel from the buffer cache.
 Gets colour data from a pixel from the buffer cache, in the form of an array.
 
 ## `.Clear()`<br>
-Clears data. Both arguments default to `true`.
+Clears data. 
 
 <br><br>
 # Draw Functions:
