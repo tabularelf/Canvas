@@ -98,6 +98,8 @@ Gets colour data from a pixel from the buffer cache.
 ## `.GetPixelArray(x, y)`<br>
 Gets colour data from a pixel from the buffer cache, in the form of an array.
 
+<br><br>
+# Draw Functions:
 This next following part involves draw versions of `draw_surface*`, but designed for Canvas.
 
 ## `.Draw(x, y)`<br>
