@@ -1,4 +1,4 @@
-# Canvas v1.2.1
+# Canvas v1.3.0
 A surface that you can modify & keep the contents, even when the surface should've had been lost, for GameMaker Studio 2.3+!
 
 Join my Discord! https://discord.gg/ThW5exp6r4
@@ -14,7 +14,7 @@ draw_rectangle_colour(32, 32, width, height, c_red, c_green, c_blue, c_yellow, f
 surf.Finish();
 
 // Draw Event
-draw_surface(surf.GetSurfaceID(), 0, 0);
+surf.Draw(0, 0);
 ```
 
 # Methods
@@ -43,11 +43,13 @@ Returns the set surface width/height.
 ## `.GetSurfaceID()`<br>
 Returns a surface ID. This should always be used before you do anything with the surface itself.
 
-## `.GetBufferContents()`<br>
+## `.GetBufferContents([forceCompress])`<br>
 This returns the buffer contents that the surface has been saved onto (if any), with a small header format to determine if:<br>
 - It's compressed
 - The width
 - The height
+
+If `[forceCompress]` is set to `true` (default is `false`), it will give you a compressed version of the current contents, if it's not compressed.
 
 ## `.SetBufferContents(buffer)`<br>
 Sets the canvas to the buffer contents. If the width and height don't match from the buffer, it'll resize the Canvas for you.
@@ -78,6 +80,15 @@ If `[updateCache]` is set to `true` (default is the state of `.WriteToCache()`),
 ## `.CopySurfacePart(surfaceID, x, y, xs, ys, ws, hs, [forceResize], [updateCache])`<br>
 Same as above, except also takes in a few additional arguments for copying parts of a surface.
 
+## `.CopyCanvas(canvas, x, y, [forceResize], [updateCache])`<br>
+Same as `.CopySurface()`, but copies a Canvas surface instead.
+
+## `.CopyCanvasPart(canvas, x, y, xs, ys, ws, hs, [forceResize], [updateCache])`<br>
+Same as `.CopySurfacePart()`, but copies a Canvas surface instead.
+
+## `.IsAvailable()`<br>
+Determines if the Canvas has some kind of data, and isn't in use.
+
 ## `.GetTexture()`<br>
 Gets the texture of the surface.
 
@@ -86,3 +97,32 @@ Gets colour data from a pixel from the buffer cache.
 
 ## `.GetPixelArray(x, y)`<br>
 Gets colour data from a pixel from the buffer cache, in the form of an array.
+
+This next following part involves draw versions of `draw_surface*`, but designed for Canvas.
+
+## `.Draw(x, y)`<br>
+Same as `draw_surface()`.
+
+## `.DrawExt(x, y, xscale, yscale, rotation, colour, alpha)`<br>
+Same as `draw_surface_ext()`.
+
+## `.DrawTiled(x, y)`<br>
+Same as `draw_surface_tiled()`.
+
+## `.DrawTiledExt(x, y, xscale, yscale, rotation, colour, alpha)`<br>
+Same as `draw_surface_tiled_ext()`.
+
+## `.DrawPart(left, top, width, height, x, y)`<br>
+Same as `draw_surface_part()`.
+
+## `.DrawPartExt(left, top, width, height, x, y, xscale, yscale, colour, alpha)`<br>
+Same as `draw_surface_part_ext()`.
+
+## `.DrawStretched(x, y, width, height)`<br>
+Same as `draw_surface_stretched()`.
+
+## `.DrawStretchedExt(x, y, width, height, colour, alpha)`<br>
+Same as `draw_surface_stretched_ext()`.
+
+## `.DrawGeneral(left, top, width, height, x, y, xscale, yscale, rotation, colour1, colour2, colour3, colour4, alpha)`<br>
+Same as `draw_surface_general()`.

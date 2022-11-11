@@ -84,9 +84,7 @@ function Canvas(_width, _height, _forceInit = false) constructor {
 				__CanvasError("Canvas " + string(_canvas) + " is not a valid Canvas instance!");
 			}
 			
-			if (!_canvas.IsAvailable()) {
-				__CanvasError("Canvas is empty or in use!");
-			}
+			__validateContents();
 			CopySurface(_canvas.GetSurfaceID(), _x, _y, _forceResize, _updateCache);
 			return self;
 		}
@@ -96,9 +94,7 @@ function Canvas(_width, _height, _forceInit = false) constructor {
 				__CanvasError("Canvas " + string(_canvas) + " is not a valid Canvas instance!");	
 			}
 			
-			if (!_canvas.IsAvailable()) {
-				__CanvasError("Canvas is empty or in use!");
-			}
+			__validateContents();
 			CopySurfacePart(_canvas.GetSurfaceID(), _x, _y, _xs, _ys, _ws, _hs, _forceResize, _updateCache);
 			return self;
 		}
@@ -109,7 +105,7 @@ function Canvas(_width, _height, _forceInit = false) constructor {
 		
 		static CopySurface = function(_surfID, _x, _y, _forceResize = false, _updateCache = __writeToCache) {
 			if (!surface_exists(_surfID)) {
-				show_error("Canvas: Surface " + string(_surfID) + " doesn't exist!", true);	
+				__CanvasError("Surface " + string(_surfID) + " doesn't exist!", true);	
 			}
 			
 			__init();
@@ -146,7 +142,7 @@ function Canvas(_width, _height, _forceInit = false) constructor {
 		
 		static CopySurfacePart = function(_surfID, _x, _y, _xs, _ys, _ws, _hs, _forceResize = false, _updateCache = __writeToCache) {
 			if (!surface_exists(_surfID)) {
-				show_error("Canvas: Surface " + string(_surfID) + " doesn't exist!", true);	
+				__CanvasError("Surface " + string(_surfID) + " doesn't exist!", true);	
 			}
 			
 			__init();
@@ -377,8 +373,6 @@ function Canvas(_width, _height, _forceInit = false) constructor {
 		static Cache = function() {
 			if (!buffer_exists(__cacheBuffer)) {
 				if (buffer_exists(__buffer)) {
-					// Have to do this due to a bug with buffer_compress. 
-					// Will change later once bugfix comes through.
 					var _size = __width*__height*4;
 					__cacheBuffer = buffer_compress(__buffer, 0, _size);
 					
@@ -487,74 +481,62 @@ function Canvas(_width, _height, _forceInit = false) constructor {
 			return self;
 		}
 		
-		static Draw = function(_x, _y) {
+		static __validateContents = function() {
 			if (!IsAvailable()) {
-				__CanvasError("Canvas is empty or in use!");		
-			}
+				__CanvasError("Canvas has no data or in use!");		
+			}	
+		}
+		
+		static Draw = function(_x, _y) {
+			__validateContents();
 			CheckSurface();
 			draw_surface(__surface, _x, _y);
 		}
 		
 		static DrawExt = function(_x, _y, _xscale, _yscale, _rot, _col, _alpha) {
-			if (!IsAvailable()) {
-				__CanvasError("Canvas is empty or in use!");		
-			}
+			__validateContents();
 			CheckSurface();
 			draw_surface_ext(__surface, _x, _y, _xscale, _yscale, _rot, _col, _alpha);
 		}
 		
 		static DrawTiled = function(_x, _y) {
-			if (!IsAvailable()) {
-				__CanvasError("Canvas is empty or in use!");		
-			}
+			__validateContents();
 			CheckSurface();
 			draw_surface_tiled(__surface, _x, _y);
 		}
 		
-		static DrawTiledExt = function(_x, _y) {
-			if (!IsAvailable()) {
-				__CanvasError("Canvas is empty or in use!");		
-			}
+		static DrawTiledExt = function(_x, _y, _xscale, _yscale, _col, _alpha) {
+			__validateContents();
 			CheckSurface();
 			draw_surface_tiled_ext(__surface, _x, _y, _xscale, _yscale, _col, _alpha);
 		}
 		
 		static DrawPart = function(_left, _top, _width, _height, _x, _y) {
-			if (!IsAvailable()) {
-				__CanvasError("Canvas is empty or in use!");		
-			}
+			__validateContents();
 			CheckSurface();
 			draw_surface_part(__surface, _left, _top, _width, _height, _x, _y);
 		}
 		
 		static DrawPartExt = function(_left, _top, _width, _height, _x, _y, _xscale, _yscale, _col, _alpha) {
-			if (!IsAvailable()) {
-				__CanvasError("Canvas is empty or in use!");		
-			}
+			__validateContents();
 			CheckSurface();
 			draw_surface_part_ext(__surface, _left, _top, _width, _height, _x, _y, _xscale, _yscale, _col, _alpha);
 		}
 		
 		static DrawStretched = function(_x, _y, _width, _height) {
-			if (!IsAvailable()) {
-				__CanvasError("Canvas is empty or in use!");		
-			}
+			__validateContents();
 			CheckSurface();
 			draw_surface_stretched(__surface, _x, _y, _width, _height);
 		}
 		
 		static DrawStretchedExt = function(_x, _y, _width, _height, _col, _alpha) {
-			if (!IsAvailable()) {
-				__CanvasError("Canvas is empty or in use!");		
-			}
+			__validateContents();
 			CheckSurface();
 			draw_surface_stretched_ext(__surface, _x, _y, _width, _height, _col, _alpha);
 		}
 		
 		static DrawGeneral = function(_left, _top, _width, _height, _x, _y, _xscale, _yscale, _rot, _col1, _col2, _col3, _col4, _alpha) {
-			if (!IsAvailable()) {
-				__CanvasError("Canvas is empty or in use!");		
-			}
+			__validateContents();
 			CheckSurface();
 			draw_surface_general(__surface, _left, _top, _width, _height, _x, _y, _xscale, _yscale, _rot, _col1, _col2, _col3, _col4, _alpha);
 		}
