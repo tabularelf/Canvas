@@ -4,8 +4,8 @@
 	Depending on the moment when you invoke this (EndDraw, EndDrawGui, ...) it will hold different content.
 */
 
-/// @function		GetAppCanvas()
-function GetAppCanvas() {
+/// @function CanvasGetAppSurf()
+function CanvasGetAppSurf() {
 	return new Canvas(
 		surface_get_width(application_surface), 
 		surface_get_height(application_surface), true)

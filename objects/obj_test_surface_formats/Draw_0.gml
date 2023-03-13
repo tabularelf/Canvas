@@ -1,0 +1,1 @@
+draw_surface(surf.GetSurfaceID(), 0, 0);

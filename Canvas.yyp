@@ -1,50 +1,43 @@
 {
   "resourceType": "GMProject",
-  "resourceVersion": "1.6",
+  "resourceVersion": "1.7",
   "name": "Canvas",
-  "resources": [
-    {"id":{"name":"GetAppCanvas","path":"scripts/GetAppCanvas/GetAppCanvas.yy",},"order":3,},
-    {"id":{"name":"obj_test","path":"objects/obj_test/obj_test.yy",},"order":2,},
-    {"id":{"name":"__CanvasError","path":"scripts/__CanvasError/__CanvasError.yy",},"order":2,},
-    {"id":{"name":"obj_test_copysurface","path":"objects/obj_test_copysurface/obj_test_copysurface.yy",},"order":6,},
-    {"id":{"name":"obj_test_resize","path":"objects/obj_test_resize/obj_test_resize.yy",},"order":5,},
-    {"id":{"name":"Canvas","path":"scripts/Canvas/Canvas.yy",},"order":0,},
-    {"id":{"name":"obj_test_manual_write","path":"objects/obj_test_manual_write/obj_test_manual_write.yy",},"order":4,},
-    {"id":{"name":"CanvasIsCanvas","path":"scripts/CanvasIsCanvas/CanvasIsCanvas.yy",},"order":1,},
-    {"id":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},"order":1,},
-  ],
-  "Options": [
-    {"name":"Amazon Fire","path":"options/amazonfire/options_amazonfire.yy",},
-    {"name":"Android","path":"options/android/options_android.yy",},
-    {"name":"HTML5","path":"options/html5/options_html5.yy",},
-    {"name":"iOS","path":"options/ios/options_ios.yy",},
-    {"name":"Linux","path":"options/linux/options_linux.yy",},
-    {"name":"macOS","path":"options/mac/options_mac.yy",},
-    {"name":"tvOS","path":"options/tvos/options_tvos.yy",},
-    {"name":"Windows","path":"options/windows/options_windows.yy",},
-    {"name":"operagx","path":"options/operagx/options_operagx.yy",},
-    {"name":"Main","path":"options/main/options_main.yy",},
-  ],
-  "defaultScriptType": 1,
-  "isEcma": false,
-  "configs": {
-    "name": "Default",
-    "children": [],
-  },
-  "RoomOrderNodes": [
-    {"roomId":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
-  ],
-  "Folders": [
-    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Canvas","folderPath":"folders/Canvas.yy","order":3,},
-  ],
   "AudioGroups": [
     {"resourceType":"GMAudioGroup","resourceVersion":"1.3","name":"audiogroup_default","targets":-1,},
   ],
-  "TextureGroups": [
-    {"resourceType":"GMTextureGroup","resourceVersion":"1.3","name":"Default","isScaled":true,"compressFormat":"bz2","loadType":"default","directory":"","autocrop":true,"border":2,"mipsToGenerate":0,"groupParent":null,"targets":-1,},
+  "configs": {
+    "children": [],
+    "name": "Default",
+  },
+  "defaultScriptType": 1,
+  "Folders": [
+    {"resourceType":"GMFolder","resourceVersion":"1.0","name":"Canvas","folderPath":"folders/Canvas.yy",},
   ],
   "IncludedFiles": [],
+  "isEcma": false,
+  "LibraryEmitters": [],
   "MetaData": {
-    "IDEVersion": "2022.9.1.51",
+    "IDEVersion": "2023.2.0.71",
   },
+  "resources": [
+    {"id":{"name":"CanvasGetAppSurf","path":"scripts/CanvasGetAppSurf/CanvasGetAppSurf.yy",},},
+    {"id":{"name":"shd_f32","path":"shaders/shd_f32/shd_f32.yy",},},
+    {"id":{"name":"obj_test_surface_formats","path":"objects/obj_test_surface_formats/obj_test_surface_formats.yy",},},
+    {"id":{"name":"obj_test","path":"objects/obj_test/obj_test.yy",},},
+    {"id":{"name":"__CanvasError","path":"scripts/__CanvasError/__CanvasError.yy",},},
+    {"id":{"name":"obj_test_copysurface","path":"objects/obj_test_copysurface/obj_test_copysurface.yy",},},
+    {"id":{"name":"obj_test_resize","path":"objects/obj_test_resize/obj_test_resize.yy",},},
+    {"id":{"name":"Canvas","path":"scripts/Canvas/Canvas.yy",},},
+    {"id":{"name":"__CanvasSurfFormat","path":"scripts/__CanvasSurfFormat/__CanvasSurfFormat.yy",},},
+    {"id":{"name":"obj_test_appcanvas","path":"objects/obj_test_appcanvas/obj_test_appcanvas.yy",},},
+    {"id":{"name":"obj_test_manual_write","path":"objects/obj_test_manual_write/obj_test_manual_write.yy",},},
+    {"id":{"name":"CanvasIsCanvas","path":"scripts/CanvasIsCanvas/CanvasIsCanvas.yy",},},
+    {"id":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
+  ],
+  "RoomOrderNodes": [
+    {"roomId":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
+  ],
+  "TextureGroups": [
+    {"resourceType":"GMTextureGroup","resourceVersion":"1.3","name":"Default","autocrop":true,"border":2,"compressFormat":"bz2","directory":"","groupParent":null,"isScaled":true,"loadType":"default","mipsToGenerate":0,"targets":-1,},
+  ],
 }
