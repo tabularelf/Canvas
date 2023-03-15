@@ -30,7 +30,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		__status = CanvasStatus.NO_DATA;
 		__writeToCache = true;
 		__index = -1;
-		__format = _format;
+		__useDepth = surface_get_depth_disable();
 		// Add to refList
 		__refContents = {
 			buff: __buffer,
@@ -45,17 +45,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		if (!surface_format_is_supported(_format)) {
 			__CanvasError("Surface format " + string(__CanvasSurfFormat(_format)) + " not supported on this platform!");
 		}
-		switch(_format) {
-			case surface_rgba8unorm: __bufferSize = 4; break;
-			case surface_r8unorm: __bufferSize = 1; break;
-			case surface_rg8unorm: __bufferSize = 2; break;
-			case surface_rgba4unorm: __bufferSize = 2; break;
-			case surface_rgba16float: __bufferSize = 8; break;
-			case surface_r16float: __bufferSize = 2; break;
-			case surface_rgba32float: __bufferSize = 16; break;
-			case surface_r32float: __bufferSize = 4; break;
-			default: __CanvasError("Invalid surface format! Got " + string(_format)); break;
-		}
+		__updateFormat(_format);
 		
 		if (_forceInit) {
 			__init();
@@ -354,7 +344,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		
 		/// @param {Buffer} buffer 
 		/// @param {Real} offset 
-		static SetBufferContents = function(_cvBuff, _offset = 0) {
+		static SetBufferContents = function(_cvBuff, _offset = 0, _forceFormat = false) {
 			buffer_seek(_cvBuff, buffer_seek_start, _offset);
 			// Ensure that we aren't on a very old version of Canvas
 			var _version = buffer_read(_cvBuff, buffer_u8);
@@ -367,9 +357,12 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			var _height = buffer_read(_cvBuff, buffer_u16);
 			
 			if (__format != _format) {
-				__CanvasError("Surface format mismatched! Expected: " + string(__CanvasSurfFormat(__format)) + " got " + string(__CanvasSurfFormat(_format)));
-				//Free();
-				//__format = _format;
+				if (!_forceFormat) {
+					__CanvasError("Surface format mismatched! Expected: " + string(__CanvasSurfFormat(__format)) + " got " + string(__CanvasSurfFormat(_format)));
+					exit;
+				}
+				Free();
+				__updateFormat(_format);
 			}
 			
 			if ((__width != _width) || (__height != _height)) {
@@ -414,6 +407,15 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		
 		static GetStatus = function() {
 			return __status;	
+		}
+		
+		static SetDepthEnabled = function(_bool) {
+			__useDepth = !_bool;	
+			return self;
+		}
+		
+		static GetDepthEnabled = function() {
+			return __useDepth;	
 		}
 		
 		static Cache = function() {
@@ -743,7 +745,10 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			
 		static __SurfaceCreate = function() {
 			if (!surface_exists(__surface)) {
+				var _oldDepthDisabled = surface_get_depth_disable();
+				surface_depth_disable(__useDepth);
 				__surface = surface_create(__width, __height, __format);
+				surface_depth_disable(_oldDepthDisabled);
 				__refContents.surf = __surface;
 			}
 		}
@@ -769,6 +774,21 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 					__refContents.buff = __buffer;
 				}
 			}
+		}
+		
+		static __updateFormat = function(_format) {
+			__format = _format;
+			switch(_format) {
+				case surface_rgba8unorm: __bufferSize = 4; break;
+				case surface_r8unorm: __bufferSize = 1; break;
+				case surface_rg8unorm: __bufferSize = 2; break;
+				case surface_rgba4unorm: __bufferSize = 2; break;
+				case surface_rgba16float: __bufferSize = 8; break;
+				case surface_r16float: __bufferSize = 2; break;
+				case surface_rgba32float: __bufferSize = 16; break;
+				case surface_r32float: __bufferSize = 4; break;
+				default: __CanvasError("Invalid surface format! Got " + string(_format)); break;
+			}	
 		}
 		
 		#endregion
