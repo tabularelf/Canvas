@@ -15,6 +15,6 @@ function __CanvasGC() {
 		}
 		_i = (_i+1) % _size;
 		
-		if (get_timer() >= _totalTime) exit;
+		if (get_timer() >= _totalTime) break;
 	}
 }

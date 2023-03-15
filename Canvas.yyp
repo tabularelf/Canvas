@@ -22,7 +22,6 @@
   },
   "resources": [
     {"id":{"name":"CanvasGetAppSurf","path":"scripts/CanvasGetAppSurf/CanvasGetAppSurf.yy",},},
-    {"id":{"name":"shd_f32","path":"shaders/shd_f32/shd_f32.yy",},},
     {"id":{"name":"obj_test_surface_formats","path":"objects/obj_test_surface_formats/obj_test_surface_formats.yy",},},
     {"id":{"name":"obj_test","path":"objects/obj_test/obj_test.yy",},},
     {"id":{"name":"__CanvasError","path":"scripts/__CanvasError/__CanvasError.yy",},},

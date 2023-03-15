@@ -4,7 +4,6 @@
   ],
   "ResourceOrderSettings": [
     {"name":"CanvasGetAppSurf","order":3,"path":"scripts/CanvasGetAppSurf/CanvasGetAppSurf.yy",},
-    {"name":"shd_f32","order":9,"path":"shaders/shd_f32/shd_f32.yy",},
     {"name":"obj_test_surface_formats","order":8,"path":"objects/obj_test_surface_formats/obj_test_surface_formats.yy",},
     {"name":"obj_test","order":2,"path":"objects/obj_test/obj_test.yy",},
     {"name":"obj_test_copysurface","order":6,"path":"objects/obj_test_copysurface/obj_test_copysurface.yy",},

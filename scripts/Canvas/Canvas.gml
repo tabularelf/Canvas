@@ -1,25 +1,8 @@
-#macro __CANVAS_CREDITS "@TabularElf - https://tabelf.link/"
-#macro __CANVAS_VERSION "1.3.0"
-#macro __CANVAS_ON_WEB (os_browser != browser_not_a_browser)
-show_debug_message("Canvas " + __CANVAS_VERSION + " initalized! Created by " + __CANVAS_CREDITS);
-
-#macro __CANVAS_HEADER_SIZE 7
-
-// We have this set to 2 to handle older Canvas versions
-#macro __CANVAS_HEADER_VERSION 2 
-
-enum CanvasStatus {
-	NO_DATA,
-	IN_USE,
-	HAS_DATA,
-	HAS_DATA_CACHED
-}
-
 /// @func Canvas
 /// @param {Real} width
 /// @param {Real} height
 /// @param {Boolean} forceInit
-/// @param {Constant.SurfaceFormatType} surface_format
+/// @param {Constant.SurfaceFormatType} surfaceFormat
 function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unorm) constructor {
 		static __sys = __CanvasSystem();
 		__width = _width;
@@ -131,7 +114,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			return (__status == CanvasStatus.HAS_DATA) || (__status == CanvasStatus.HAS_DATA_CACHED);	
 		}
 		
-		/// @param {ID} surfID
+		/// @param {Id.Surface} surfID
 		/// @param {Real} x destination x
 		/// @param {Real} y destination y
 		/// @param {Bool=false} forceResize
@@ -173,15 +156,15 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			return self;
 		}
 		
-		/// @param {id} surfID
-		/// @param {real} x destination x
-		/// @param {real} y destination y
-		/// @param {real} xs source x
-		/// @param {real} ys source y
-		/// @param {real} ws source width
-		/// @param {real} hs source height
-		/// @param {bool=false} forceResize
-		/// @param {bool} updateCache
+		/// @param {Id.Surface} surfID
+		/// @param {Real} x destination x
+		/// @param {Real} y destination y
+		/// @param {Real} xs source x
+		/// @param {Real} ys source y
+		/// @param {Real} ws source width
+		/// @param {Real} hs source height
+		/// @param {Bool=false} forceResize
+		/// @param {Bool} updateCache
 		static CopySurfacePart = function(_surfID, _x, _y, _xs, _ys, _ws, _hs, _forceResize = false, _updateCache = __writeToCache) {
 			if (!surface_exists(_surfID)) {
 				__CanvasError("Surface " + string(_surfID) + " doesn't exist!");	
@@ -250,10 +233,10 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			} 
 		}
 		
-		/// @param {ID} surfID
+
 		/// @param {Real} width new width
 		/// @param {Real} height new height
-		/// @param {Bool = false} keepData 
+		/// @param {Bool} keepData 
 		static Resize = function(_width, _height, _keepData = false) {
 			
 			if (__width == _width) && (__height == _height) return self;
@@ -290,7 +273,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 				var _tempSurf = surface_create(_width, _height);
 				surface_copy(_tempSurf, 0, 0, __surface);
 				surface_resize(__surface, _width, _height);
-				buffer_resize(__buffer, _width*_height*4);
+				buffer_resize(__buffer, _width*_height*__format);
 				surface_copy(__surface, 0, 0, _tempSurf);
 				surface_free(_tempSurf);
 				

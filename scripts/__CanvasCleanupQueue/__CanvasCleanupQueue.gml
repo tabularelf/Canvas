@@ -1,6 +1,6 @@
 function __CanvasCleanupQueue() {
 			var _size = ds_list_size(GCList);
-			var _totalTime = get_timer() + 50000;
+			var _totalTime = get_timer() + 5000;
 			var _totalInstancesCleaned = 0;
 			repeat(_size) {
 				var _isCleanedProper = true;

@@ -1,11 +1,9 @@
 show_debug_overlay(true);
 surf = new Canvas(512, 512, false, surface_rg8unorm);
 surf.Start();
-//shader_set(shd_f32);
 draw_set_alpha(1);
 draw_rectangle_colour(0, 0,surf.GetWidth(),surf.GetHeight(), c_red, c_red, c_red, c_red, false);
 draw_set_alpha(1);
-//shader_reset();
 surf.Finish();
 __prevStatus = 0;
 myBuffer = -1;
@@ -16,10 +14,6 @@ draw_set_alpha(1);
 draw_rectangle_colour(0, 0,surf.GetWidth(),surf.GetHeight(), c_red, c_lime, c_blue, c_yellow, false);
 draw_set_alpha(1);
 surf2.Finish();
+count = 0;
 
 surf.CopyCanvas(surf2, 0, 0, false);
-array = array_create(10000);
-var _i = 0;
-repeat(10000) {
-	array[_i++] = new Canvas(128, 128, true);
-}
