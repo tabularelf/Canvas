@@ -18,5 +18,8 @@ draw_set_alpha(1);
 surf2.Finish();
 
 surf.CopyCanvas(surf2, 0, 0, false);
-
-draw_sprite_ext(
+array = array_create(10000);
+var _i = 0;
+repeat(10000) {
+	array[_i++] = new Canvas(128, 128, true);
+}

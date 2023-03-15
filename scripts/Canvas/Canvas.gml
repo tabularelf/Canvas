@@ -21,6 +21,7 @@ enum CanvasStatus {
 /// @param {Boolean} forceInit
 /// @param {Constant.SurfaceFormatType} surface_format
 function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unorm) constructor {
+		static __sys = __CanvasSystem();
 		__width = _width;
 		__height = _height;
 		__surface = -1;
@@ -30,6 +31,17 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		__writeToCache = true;
 		__index = -1;
 		__format = _format;
+		// Add to refList
+		__refContents = {
+			buff: __buffer,
+			cbuff: __cacheBuffer,
+			surf: __surface
+		}
+		
+		var _weakRef = weak_ref_create(self);
+		
+		ds_list_add(__sys.refList, [_weakRef, __refContents]);
+		
 		if (!surface_format_is_supported(_format)) {
 			__CanvasError("Surface format " + string(__CanvasSurfFormat(_format)) + " not supported on this platform!");
 		}
@@ -50,6 +62,8 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			CheckSurface();
 			__status = CanvasStatus.HAS_DATA;
 		}
+		
+		#region Default Methods
 		
 		/// @param {Real} targetID use set_target_ext? (default: no) - any value != -1 will use set_target_ext
 		static Start = function(_targetID = -1) {
@@ -88,18 +102,6 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			
 			return self;
 		}
-		
-		static __init = function() {
-			if (!buffer_exists(__buffer)) {
-				if (buffer_exists(__cacheBuffer)) {
-					// Lets decompress it
-					Restore();
-				} else {
-					__buffer = buffer_create(__width * __height * __bufferSize, buffer_fixed, 1);	
-				}
-			}
-		}
-		
 				
 		/// @param {struct.Canvas} canvas
 		/// @param {Real} x destination x
@@ -329,11 +331,6 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			return __surface;
 		}
 		
-		static __refreshSurface = function() {
-			surface_free(__surface);
-			CheckSurface();
-		}
-		
 		/// @param {Bool} forceCompress 
 		static GetBufferContents = function(_forceCompress = false) {
 			//
@@ -355,24 +352,10 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			return _buffer;
 		}
 		
-		static __copyBufferContents = function(_bufferToCopy, _forceCompressed = false) {
-			// Send copied buffer as a result
-			var _size = buffer_get_size(_bufferToCopy);
-			var _isCompressed = (_forceCompressed ? true: (GetStatus() == CanvasStatus.HAS_DATA_CACHED ? true : false));
-			var _buffer = buffer_create(_size+__CANVAS_HEADER_SIZE, buffer_fixed, 1);
-			buffer_write(_buffer, buffer_u8, __CANVAS_HEADER_VERSION);
-			buffer_write(_buffer, buffer_bool, _isCompressed);
-			buffer_write(_buffer, buffer_u8, __format);
-			buffer_write(_buffer, buffer_u16, __width);
-			buffer_write(_buffer, buffer_u16, __height);
-			buffer_copy(_bufferToCopy, 0, _size, _buffer, __CANVAS_HEADER_SIZE);
-			/* Feather ignore once GM1035 */	
-			return _buffer;
-		}
-		
 		/// @param {Buffer} buffer 
-		static SetBufferContents = function(_cvBuff) {
-			buffer_seek(_cvBuff, buffer_seek_start, 0);
+		/// @param {Real} offset 
+		static SetBufferContents = function(_cvBuff, _offset = 0) {
+			buffer_seek(_cvBuff, buffer_seek_start, _offset);
 			// Ensure that we aren't on a very old version of Canvas
 			var _version = buffer_read(_cvBuff, buffer_u8);
 			if (_version < 2) {
@@ -422,18 +405,11 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 					__cacheBuffer = _buff;
 				break;
 			}
-			return self;
-		}
 			
-		static __SurfaceCreate = function() {
-			if (!surface_exists(__surface)) {
-				__surface = surface_create(__width, __height, __format);
-			}
-		}
-		
-		static __UpdateCache = function() {
-			buffer_get_surface(__buffer, __surface, 0);
-			__status = CanvasStatus.HAS_DATA;	
+			__refContents.surf = __surface;
+			__refContents.buff = __buffer;
+			__refContents.cbuff = __cacheBuffer;
+			return self;
 		}
 		
 		static GetStatus = function() {
@@ -445,17 +421,20 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 				if (buffer_exists(__buffer)) {
 					var _size = __width*__height*__bufferSize;
 					__cacheBuffer = buffer_compress(__buffer, 0, _size);
+					__refContents.cbuff =__cacheBuffer;
 					
 					// Remove main buffer
 					buffer_delete(__buffer);
 					/* Feather ignore once GM1043 */
 					__buffer = -1;
+					__refContents.buff = -1;
 					
 					// Remove surface
 					if (surface_exists(__surface)) {
 						surface_free(__surface);	
 						/* Feather ignore once GM1043 */
 						__surface = -1;
+						__refContents.surf = -1;
 					}
 				}
 			}
@@ -469,9 +448,11 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 				var _dbuff = buffer_decompress(__cacheBuffer);
 				if (buffer_exists(_dbuff)) {
 					__buffer = _dbuff;
+					__refContents.buff = __buffer;
 					buffer_delete(__cacheBuffer);
 					/* Feather ignore once GM1043 */
 					__cacheBuffer = -1;
+					__refContents.cbuff = -1;
 					// Restore surface
 					CheckSurface();
 				} else {
@@ -507,7 +488,9 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		
 		static Flush = function() {
 			if (surface_exists(__surface)) {
-				surface_free(__surface);	
+				surface_free(__surface);
+				__surface = -1;
+				__refContents.surf = -1;
 			}
 			return self;
 		}
@@ -624,12 +607,6 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			return __format;		
 		}
 		
-		static __validateContents = function() {
-			if (!IsAvailable()) {
-				__CanvasError("Canvas has no data or in use!");		
-			}	
-		}
-		
 		/// @param {Real} x 
 		/// @param {Real} y 
 		static Draw = function(_x, _y) {
@@ -740,4 +717,59 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			CheckSurface();
 			draw_surface_general(__surface, _left, _top, _width, _height, _x, _y, _xscale, _yscale, _rot, _col1, _col2, _col3, _col4, _alpha);
 		}
+	#endregion
+		
+		#region Internal Methods
+		
+		static __refreshSurface = function() {
+			surface_free(__surface);
+			CheckSurface();
+		}
+			
+		static __copyBufferContents = function(_bufferToCopy, _forceCompressed = false) {
+			// Send copied buffer as a result
+			var _size = buffer_get_size(_bufferToCopy);
+			var _isCompressed = (_forceCompressed ? true: (GetStatus() == CanvasStatus.HAS_DATA_CACHED ? true : false));
+			var _buffer = buffer_create(_size+__CANVAS_HEADER_SIZE, buffer_fixed, 1);
+			buffer_write(_buffer, buffer_u8, __CANVAS_HEADER_VERSION);
+			buffer_write(_buffer, buffer_bool, _isCompressed);
+			buffer_write(_buffer, buffer_u8, __format);
+			buffer_write(_buffer, buffer_u16, __width);
+			buffer_write(_buffer, buffer_u16, __height);
+			buffer_copy(_bufferToCopy, 0, _size, _buffer, __CANVAS_HEADER_SIZE);
+			/* Feather ignore once GM1035 */	
+			return _buffer;
+		}
+			
+		static __SurfaceCreate = function() {
+			if (!surface_exists(__surface)) {
+				__surface = surface_create(__width, __height, __format);
+				__refContents.surf = __surface;
+			}
+		}
+		
+		static __UpdateCache = function() {
+			buffer_get_surface(__buffer, __surface, 0);
+			__status = CanvasStatus.HAS_DATA;	
+		}
+			
+		static __validateContents = function() {
+			if (!IsAvailable()) {
+				__CanvasError("Canvas has no data or in use!");		
+			}	
+		}
+			
+		static __init = function() {
+			if (!buffer_exists(__buffer)) {
+				if (buffer_exists(__cacheBuffer)) {
+					// Lets decompress it
+					Restore();
+				} else {
+					__buffer = buffer_create(__width * __height * __bufferSize, buffer_fixed, 1);	
+					__refContents.buff = __buffer;
+				}
+			}
+		}
+		
+		#endregion
 }

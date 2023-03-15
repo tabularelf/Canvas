@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "__CanvasError",
+  "name": "__CanvasSystem",
   "isCompatibility": false,
   "isDnD": false,
   "parent": {

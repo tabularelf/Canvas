@@ -1,5 +1,11 @@
 if (keyboard_check_released(vk_space)) {
 	surf.Cache();	
+	if (is_array(array)) {
+		for(var _i = 0; _i < 10000; ++_i) {
+			//array[_i].Free();
+		}
+	}
+	array = -1;
 }
 
 if (keyboard_check(vk_control)) {
