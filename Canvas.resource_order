@@ -12,6 +12,7 @@
     {"name":"__CanvasCleanupQueue","order":4,"path":"scripts/__CanvasCleanupQueue/__CanvasCleanupQueue.yy",},
     {"name":"__CanvasGC","order":3,"path":"scripts/__CanvasGC/__CanvasGC.yy",},
     {"name":"__CanvasSurfFormat","order":1,"path":"scripts/__CanvasSurfFormat/__CanvasSurfFormat.yy",},
+    {"name":"obj_test_appsurf","order":9,"path":"objects/obj_test_appsurf/obj_test_appsurf.yy",},
     {"name":"obj_test_appcanvas","order":7,"path":"objects/obj_test_appcanvas/obj_test_appcanvas.yy",},
     {"name":"obj_test_manual_write","order":4,"path":"objects/obj_test_manual_write/obj_test_manual_write.yy",},
     {"name":"CanvasIsCanvas","order":1,"path":"scripts/CanvasIsCanvas/CanvasIsCanvas.yy",},

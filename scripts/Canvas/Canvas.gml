@@ -306,7 +306,6 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		
 		/// @param {Bool} forceCompress 
 		static GetBufferContents = function(_forceCompress = false) {
-			//
 			if (_forceCompress) {
 				if (buffer_exists(__buffer)) {
 					var _cbuff = buffer_compress(__buffer, 0, buffer_get_size(__buffer));
@@ -448,9 +447,14 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			return self;
 		}
 		
-		static WriteToCache = function(_bool) {
+		/// @param {Bool} Boolean
+		static SetWriteToCache = function(_bool) {
 			__writeToCache = _bool;	
 			return self;
+		}
+		
+		static GetWriteToCache = function() {
+			return __writeToCache;	
 		}
 		
 		static UpdateCache = function() {
