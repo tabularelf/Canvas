@@ -31,11 +31,12 @@
     {"id":{"name":"__CanvasCleanupQueue","path":"scripts/__CanvasCleanupQueue/__CanvasCleanupQueue.yy",},},
     {"id":{"name":"__CanvasGC","path":"scripts/__CanvasGC/__CanvasGC.yy",},},
     {"id":{"name":"Canvas","path":"scripts/Canvas/Canvas.yy",},},
+    {"id":{"name":"__CanvasAppSurf","path":"scripts/__CanvasAppSurf/__CanvasAppSurf.yy",},},
     {"id":{"name":"__CanvasSurfFormat","path":"scripts/__CanvasSurfFormat/__CanvasSurfFormat.yy",},},
-    {"id":{"name":"obj_test_appsurf","path":"objects/obj_test_appsurf/obj_test_appsurf.yy",},},
     {"id":{"name":"obj_test_appcanvas","path":"objects/obj_test_appcanvas/obj_test_appcanvas.yy",},},
     {"id":{"name":"obj_test_manual_write","path":"objects/obj_test_manual_write/obj_test_manual_write.yy",},},
     {"id":{"name":"CanvasIsCanvas","path":"scripts/CanvasIsCanvas/CanvasIsCanvas.yy",},},
+    {"id":{"name":"spr_test","path":"sprites/spr_test/spr_test.yy",},},
     {"id":{"name":"rm_test","path":"rooms/rm_test/rm_test.yy",},},
   ],
   "RoomOrderNodes": [

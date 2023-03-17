@@ -6,8 +6,9 @@
 
 /// @function CanvasGetAppSurf()
 /// @param {Bool} newAppSurf
+/// @return Struct.Canvas
 function CanvasGetAppSurf(_new = false) {
-	static _appSurf = new Canvas(surface_get_width(application_surface), surface_get_height(application_surface));
+	static _appSurf = __CanvasAppSurf(surface_get_width(application_surface), surface_get_height(application_surface));
 	
 	if (!application_surface_is_enabled()) { 
 		__CanvasError("application_surface is disabled! Please enable before using this function!");
@@ -20,8 +21,5 @@ function CanvasGetAppSurf(_new = false) {
 			.CopySurface(application_surface, 0, 0);	
 	}
 	
-	if (surface_exists(application_surface)) {
-		return _appSurf.CopySurface(application_surface, 0, 0);	
-	}
 	return _appSurf;
 }

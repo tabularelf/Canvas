@@ -1,0 +1,1 @@
+draw_sprite(spr_test, 0, room_width div 2 + (sin(current_time / 1000) * 128), room_height div 2);

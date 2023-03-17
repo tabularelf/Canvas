@@ -20,6 +20,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			cbuff: __cacheBuffer,
 			surf: __surface
 		}
+		__isAppSurf = false;
 		
 		var _weakRef = weak_ref_create(self);
 		
@@ -28,8 +29,8 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		if (!surface_format_is_supported(_format)) {
 			__CanvasError("Surface format " + string(__CanvasSurfFormat(_format)) + " not supported on this platform!");
 		}
-		__updateFormat(_format);
 		
+		__updateFormat(_format);
 		if (_forceInit) {
 			__init();
 			CheckSurface();
@@ -153,6 +154,8 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 				Start(__index);	
 			}
 			
+			__status = CanvasStatus.HAS_DATA;
+			
 			return self;
 		}
 		
@@ -196,6 +199,8 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 				Start(__index);	
 			}
 			
+			__status = CanvasStatus.HAS_DATA;
+			
 			return self;
 		}
 			
@@ -228,9 +233,10 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 					if (buffer_exists(__cacheBuffer)) {
 						Restore();	
 					}
-					buffer_set_surface(__buffer,__surface, 0);
+					if (surface_exists(__surface)) buffer_set_surface(__buffer,__surface, 0);
 				}
 			} 
+			return self;
 		}
 		
 
@@ -240,9 +246,15 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		static Resize = function(_width, _height, _keepData = false) {
 			
 			if (__width == _width) && (__height == _height) return self;
+			if (_width <= 0) || (_height <= 0) return self;
 			
 			__width = _width;
 			__height = _height;
+			
+			if (__isAppSurf) {
+				surface_resize(application_surface, __width, __height);	
+				return self;
+			}
 			
 			if (!_keepData) || (__CANVAS_ON_WEB) {
 				if (buffer_exists(__buffer)) {
@@ -252,7 +264,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 				if (buffer_exists(__cacheBuffer)) {
 					buffer_delete(__cacheBuffer);
 				}
-				
+
 				if (surface_exists(__surface)) {
 					surface_free(__surface);	
 				}
@@ -732,6 +744,10 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			
 		static __SurfaceCreate = function() {
 			if (!surface_exists(__surface)) {
+				if (__isAppSurf) {
+					__surface = application_surface;
+					exit;
+				}
 				var _oldDepthDisabled = surface_get_depth_disable();
 				surface_depth_disable(__useDepth);
 				__surface = surface_create(__width, __height, __format);
@@ -741,6 +757,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		}
 		
 		static __UpdateCache = function() {
+			if (!surface_exists(__surface)) exit;
 			buffer_get_surface(__buffer, __surface, 0);
 			__status = CanvasStatus.HAS_DATA;	
 		}
