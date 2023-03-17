@@ -3,7 +3,7 @@ function __CanvasAppSurf(_width, _height) {
 	_inst.__isAppSurf = true;
 	with(_inst) {
 		var _func = function() {
-			if (application_surface_is_enabled()) && (surface_exists(application_surface)) {
+			if (application_surface_is_enabled()) {
 				__surface = application_surface;
 			} 
 		}
