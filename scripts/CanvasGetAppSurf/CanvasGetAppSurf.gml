@@ -8,7 +8,7 @@
 /// @param {Bool} newAppSurf
 /// @return Struct.Canvas
 function CanvasGetAppSurf(_new = false) {
-	static _appSurf = __CanvasAppSurf(surface_get_width(application_surface), surface_get_height(application_surface));
+	static _appSurf = __CanvasAppSurf();
 	
 	if (!application_surface_is_enabled()) { 
 		__CanvasError("application_surface is disabled! Please enable before using this function!");

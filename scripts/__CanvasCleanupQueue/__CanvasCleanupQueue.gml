@@ -1,7 +1,7 @@
 function __CanvasCleanupQueue() {
 			var _size = ds_list_size(GCList);
 			var _totalTime = get_timer() + 5000;
-			var _totalInstancesCleaned = 0;
+			static _totalInstancesCleaned = 0;
 			repeat(_size) {
 				var _isCleanedProper = true;
 				var _contents = GCList[| 0];
@@ -25,12 +25,14 @@ function __CanvasCleanupQueue() {
 				}
 				ds_list_delete(GCList, 0);
 				if (get_timer() >= _totalTime) {
-					show_debug_message("Canvas: Lost references: Garbage collected " + string(_totalInstancesCleaned));
 					exit;
 				}
 			}
 			
-			if (_totalInstancesCleaned > 0) {
-				show_debug_message("Canvas: Lost references: Garbage collected " + string(_totalInstancesCleaned));	
+			if (_size == 0) {
+				if (_totalInstancesCleaned > 0) {
+					show_debug_message("Canvas: Lost references: Garbage collected " + string(_totalInstancesCleaned));	
+				}
+				_totalInstancesCleaned = 0;
 			}
 		}

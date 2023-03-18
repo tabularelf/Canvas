@@ -1,5 +1,5 @@
-function __CanvasAppSurf(_width, _height) {
-	var _inst = new Canvas(_width, _height);
+function __CanvasAppSurf() {
+	var _inst = new Canvas(surface_get_width(application_surface), surface_get_height(application_surface));
 	_inst.__isAppSurf = true;
 	with(_inst) {
 		var _func = function() {
@@ -10,6 +10,7 @@ function __CanvasAppSurf(_width, _height) {
 		
 		__status = CanvasStatus.HAS_DATA;
 		__init();
+		UpdateCache();
 		
 		time_source_start(time_source_create(time_source_global, 1, time_source_units_frames, _func, [], -1));
 	}

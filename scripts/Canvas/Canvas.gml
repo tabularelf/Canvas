@@ -1,9 +1,13 @@
+/* feather ignore all */
+
 /// @func Canvas
 /// @param {Real} width
 /// @param {Real} height
 /// @param {Boolean} forceInit
 /// @param {Constant.SurfaceFormatType} surfaceFormat
 function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unorm) constructor {
+	
+		#region Variables
 		static __sys = __CanvasSystem();
 		__width = _width;
 		__height = _height;
@@ -36,6 +40,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			CheckSurface();
 			__status = CanvasStatus.HAS_DATA;
 		}
+		#endregion
 		
 		#region Default Methods
 		
@@ -455,6 +460,21 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 				}
 			}
 			__status = CanvasStatus.HAS_DATA;
+			return self;
+		}
+		
+		/// @param {String} filename
+		static SaveAsImage = function(_filename) {
+			if (!IsAvailable()) __CanvasError("Canvas not initalized or in use! Please ensure data is ready before using .SaveAsImage()");
+			CheckSurface();
+			if (__format != surface_rgba8unorm) {
+				var _surf = surface_create(__width, __height);
+				surface_copy(_surf, 0, 0, __surface);
+				surface_save(_surf, _filename);
+				surface_free(_surf);
+			} else {
+				surface_save(__surface, _filename);	
+			}
 			return self;
 		}
 		

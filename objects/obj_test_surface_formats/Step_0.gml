@@ -34,6 +34,10 @@ if (keyboard_check_released(ord("G"))) {
 	surf.Clear();
 }
 
+if (keyboard_check_released(ord("O"))) {
+	surf.SaveAsImage("boo.png");	
+}
+
 
 __prevStatus = surf.GetStatus();
 if (surf.GetStatus() == CanvasStatus.IN_USE) {
