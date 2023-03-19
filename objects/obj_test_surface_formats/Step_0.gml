@@ -23,7 +23,7 @@ if (keyboard_check_released(ord("W"))) {
 }
 
 if (keyboard_check_released(ord("Q"))) {
-	surf.SetBufferContents(myBuffer);
+	surf.SetBufferContents(myBuffer, 0, true);
 }
 
 if (keyboard_check_released(ord("V"))) {
@@ -34,9 +34,12 @@ if (keyboard_check_released(ord("G"))) {
 	surf.Clear();
 }
 
-if (keyboard_check_released(ord("O"))) {
-	surf.SaveAsImage("boo.png");	
-}
+/*if (keyboard_check_released(ord("O"))) {
+	//surf.SaveAsImage("boo.png");	
+	var _buff = buffer_load("buffertest.raw");
+	surf.SetBufferContents(_buff, 0, true);
+	buffer_delete(_buff);
+}*/
 
 
 __prevStatus = surf.GetStatus();

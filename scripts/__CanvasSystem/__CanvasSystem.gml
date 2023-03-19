@@ -15,7 +15,8 @@ function __CanvasSystem() {
 #macro __CANVAS_ON_WEB (os_browser != browser_not_a_browser)
 __CanvasTrace(__CANVAS_VERSION + " initalized! Created by " + __CANVAS_CREDITS);
 
-#macro __CANVAS_HEADER_SIZE 7
+#macro __CANVAS_HEADER_SIZE_V2 7
+#macro __CANVAS_HEADER_SIZE_V1 5
 
 // We have this set to 2 to handle older Canvas versions
 #macro __CANVAS_HEADER_VERSION 2 

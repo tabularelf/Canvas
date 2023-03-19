@@ -343,20 +343,27 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		/// @param {Buffer} buffer 
 		/// @param {Real} offset 
 		static SetBufferContents = function(_cvBuff, _offset = 0, _forceFormat = false) {
+			var _oldTell = buffer_tell(_cvBuff);
 			buffer_seek(_cvBuff, buffer_seek_start, _offset);
 			// Ensure that we aren't on a very old version of Canvas
 			var _version = buffer_read(_cvBuff, buffer_u8);
 			if (_version < 2) {
-				__CanvasError("Setting buffer contents from an older version of Canvas. Please make a new Canvas buffer contents.");	
+				buffer_seek(_cvBuff, buffer_seek_start, _oldTell);
+				__SetBufferContentsV1(_cvBuff, _offset, _forceFormat);
+				return self;
 			}
 			var _isCompressed = buffer_read(_cvBuff, buffer_bool);
 			var _format = buffer_read(_cvBuff, buffer_u8);
 			var _width = buffer_read(_cvBuff, buffer_u16);
 			var _height = buffer_read(_cvBuff, buffer_u16);
 			
-			if (__format != _format) {
+			if (__format != _format)  {
 				if (!_forceFormat) {
 					__CanvasError("Surface format mismatched! Expected: " + string(__CanvasSurfFormat(__format)) + " got " + string(__CanvasSurfFormat(_format)));
+					exit;
+				}
+				if (__isAppSurf) {
+					__CanvasError("Cannot apply format changes to Canvas application_surface!");
 					exit;
 				}
 				Free();
@@ -371,8 +378,9 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 				}
 			}
 			
-			var _buff = buffer_create(1, buffer_grow, 1);
-			buffer_copy(_cvBuff, __CANVAS_HEADER_SIZE, buffer_get_size(_cvBuff), _buff, 0);
+			var _size = buffer_get_size(_cvBuff);
+			var _buff = buffer_create(_size, buffer_fixed, 1);
+			buffer_copy(_cvBuff, __CANVAS_HEADER_SIZE_V2, _size, _buff, 0);
 			
 			if (_isCompressed) && (GetStatus() != CanvasStatus.HAS_DATA_CACHED) {
 				var _dbuff = buffer_decompress(_buff);
@@ -400,6 +408,8 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			__refContents.surf = __surface;
 			__refContents.buff = __buffer;
 			__refContents.cbuff = __cacheBuffer;
+			
+			buffer_seek(_cvBuff, buffer_seek_start, _oldTell);
 			return self;
 		}
 		
@@ -741,6 +751,65 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		
 		#region Internal Methods
 		
+		static __SetBufferContentsV1 = function(_cvBuff, _offset, _forceFormat) {
+			var _oldTell = buffer_tell(_cvBuff);
+			buffer_seek(_cvBuff, buffer_seek_start, _offset);
+			var _isCompressed = buffer_read(_cvBuff, buffer_bool);
+			var _width = buffer_read(_cvBuff, buffer_u16);
+			var _height = buffer_read(_cvBuff, buffer_u16);
+			
+			if ((__width != _width) || (__height != _height)) {
+				__width = _width;
+				__height = _height;
+				if (surface_exists(__surface)) {
+					surface_resize(__surface, _width, _height);	
+				}
+			}
+			
+			if (__format != surface_rgba8unorm) {
+				if (!_forceFormat) {
+					__CanvasError("Surface format mismatched! Expected: " + string(__CanvasSurfFormat(__format)) + " got " + string(__CanvasSurfFormat(surface_rgba8unorm)));
+					exit;
+				}
+				Free();
+				__updateFormat(surface_rgba8unorm);
+			}
+			
+			var _size = buffer_get_size(_cvBuff);
+			var _buff = buffer_create(_size, buffer_fixed, 1);
+			buffer_copy(_cvBuff, __CANVAS_HEADER_SIZE_V1, _size, _buff, 0);
+			
+			if (_isCompressed) && (GetStatus() != CanvasStatus.HAS_DATA_CACHED) {
+				var _dbuff = buffer_decompress(_buff);
+				if (buffer_exists(_dbuff)) {
+					buffer_delete(_buff);
+					_buff = _dbuff;
+				}
+			}
+			
+			switch(GetStatus()) {
+				case CanvasStatus.NO_DATA:
+					__status = CanvasStatus.HAS_DATA;
+				case CanvasStatus.HAS_DATA:
+					buffer_delete(__buffer);
+					__buffer = _buff;
+					__refreshSurface();
+				break;
+				
+				case CanvasStatus.HAS_DATA_CACHED:
+					buffer_delete(__cacheBuffer);
+					__cacheBuffer = _buff;
+				break;
+			}
+			
+			__refContents.surf = __surface;
+			__refContents.buff = __buffer;
+			__refContents.cbuff = __cacheBuffer;
+			
+			buffer_seek(_cvBuff, buffer_seek_start, _oldTell);
+			return self;
+		}
+		
 		static __refreshSurface = function() {
 			surface_free(__surface);
 			CheckSurface();
@@ -750,14 +819,15 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			// Send copied buffer as a result
 			var _size = buffer_get_size(_bufferToCopy);
 			var _isCompressed = (_forceCompressed ? true: (GetStatus() == CanvasStatus.HAS_DATA_CACHED ? true : false));
-			var _buffer = buffer_create(_size+__CANVAS_HEADER_SIZE, buffer_fixed, 1);
+			var _buffer = buffer_create(_size+__CANVAS_HEADER_SIZE_V2, buffer_fixed, 1);
 			buffer_write(_buffer, buffer_u8, __CANVAS_HEADER_VERSION);
 			buffer_write(_buffer, buffer_bool, _isCompressed);
 			buffer_write(_buffer, buffer_u8, __format);
 			buffer_write(_buffer, buffer_u16, __width);
 			buffer_write(_buffer, buffer_u16, __height);
-			buffer_copy(_bufferToCopy, 0, _size, _buffer, __CANVAS_HEADER_SIZE);
+			buffer_copy(_bufferToCopy, 0, _size, _buffer, __CANVAS_HEADER_SIZE_V2);
 			/* Feather ignore once GM1035 */	
+			buffer_seek(_buffer, buffer_seek_start, 0);
 			return _buffer;
 		}
 			
