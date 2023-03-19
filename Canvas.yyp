@@ -28,6 +28,7 @@
     {"id":{"name":"obj_test_copysurface","path":"objects/obj_test_copysurface/obj_test_copysurface.yy",},},
     {"id":{"name":"obj_test_resize","path":"objects/obj_test_resize/obj_test_resize.yy",},},
     {"id":{"name":"__CanvasSystem","path":"scripts/__CanvasSystem/__CanvasSystem.yy",},},
+    {"id":{"name":"__CanvasTrace","path":"scripts/__CanvasTrace/__CanvasTrace.yy",},},
     {"id":{"name":"__CanvasCleanupQueue","path":"scripts/__CanvasCleanupQueue/__CanvasCleanupQueue.yy",},},
     {"id":{"name":"__CanvasGC","path":"scripts/__CanvasGC/__CanvasGC.yy",},},
     {"id":{"name":"Canvas","path":"scripts/Canvas/Canvas.yy",},},

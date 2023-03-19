@@ -1,3 +1,4 @@
+/// @ignore
 function __CanvasGC() {
 	static _i = 0;
 	var _size = ds_list_size(refList);

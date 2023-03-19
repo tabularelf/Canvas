@@ -1,3 +1,4 @@
+/// @ignore
 function __CanvasCleanupQueue() {
 			var _size = ds_list_size(GCList);
 			var _totalTime = get_timer() + 5000;
@@ -31,7 +32,7 @@ function __CanvasCleanupQueue() {
 			
 			if (_size == 0) {
 				if (_totalInstancesCleaned > 0) {
-					show_debug_message("Canvas: Lost references: Garbage collected " + string(_totalInstancesCleaned));	
+					show_debug_message("Lost references! Garbage collected " + string(_totalInstancesCleaned));	
 				}
 				_totalInstancesCleaned = 0;
 			}

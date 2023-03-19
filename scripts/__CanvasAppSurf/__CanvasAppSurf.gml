@@ -1,3 +1,4 @@
+/// @ignore
 function __CanvasAppSurf() {
 	var _inst = new Canvas(surface_get_width(application_surface), surface_get_height(application_surface));
 	_inst.__isAppSurf = true;
