@@ -342,6 +342,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		
 		/// @param {Buffer} buffer 
 		/// @param {Real} offset 
+		/// @param {Bool} forceFormat 
 		static SetBufferContents = function(_cvBuff, _offset = 0, _forceFormat = false) {
 			var _oldTell = buffer_tell(_cvBuff);
 			buffer_seek(_cvBuff, buffer_seek_start, _offset);
@@ -417,6 +418,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			return __status;	
 		}
 		
+		/// @param {Bool} DepthEnabled
 		static SetDepthEnabled = function(_bool) {
 			__useDepth = !_bool;	
 			return self;
@@ -488,7 +490,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			return self;
 		}
 		
-		/// @param {Bool} Boolean
+		/// @param {Bool} WriteToCache
 		static SetWriteToCache = function(_bool) {
 			__writeToCache = _bool;	
 			return self;
@@ -645,13 +647,13 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			draw_surface(__surface, _x, _y);
 		}
 		
-		/// @param {Real} _x 
-		/// @param {Real} _y 
-		/// @param {Real} _xscale
-		/// @param {Real} _yscale 
-		/// @param {Real} _rot
-		/// @param {Real} _col
-		/// @param {Real} _alpha
+		/// @param {Real} x 
+		/// @param {Real} y 
+		/// @param {Real} xscale
+		/// @param {Real} yscale 
+		/// @param {Real} rot
+		/// @param {Real} col
+		/// @param {Real} alpha
 		static DrawExt = function(_x, _y, _xscale, _yscale, _rot, _col, _alpha) {
 			__validateContents();
 			CheckSurface();
