@@ -13,7 +13,7 @@ function __CanvasSystem() {
 #macro __CANVAS_CREDITS "@TabularElf - https://tabelf.link/"
 #macro __CANVAS_VERSION "v2.0.0"
 #macro __CANVAS_ON_WEB (os_browser != browser_not_a_browser)
-show_debug_message(__CANVAS_VERSION + " initalized! Created by " + __CANVAS_CREDITS);
+__CanvasTrace(__CANVAS_VERSION + " initalized! Created by " + __CANVAS_CREDITS);
 
 #macro __CANVAS_HEADER_SIZE 7
 
