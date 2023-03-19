@@ -6,7 +6,6 @@ function __CanvasGC() {
 	var _totalTime = get_timer() + 50;
 	repeat(_size) {
 		if (!weak_ref_alive(refList[| _i][0])) {
-			var _isCleanedProper = true;
 			var _contents = refList[| _i][1];
 			ds_list_add(GCList, _contents);
 			
