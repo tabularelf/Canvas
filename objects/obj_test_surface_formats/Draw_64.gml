@@ -1,4 +1,4 @@
-var _col = (surf.GetFormat() == surface_rgba8unorm) ? surf.GetPixel(mouse_x, mouse_y) : 0;
+var _col = surf.GetPixel(mouse_x, mouse_y);
 var _col2 = surf.GetPixelArray(mouse_x, mouse_y);
 var _string = @"Cache Canvas: Space
 Update Surface: Control

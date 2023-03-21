@@ -533,6 +533,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		
 		/// @param {Real} x 
 		/// @param {Real} y 
+		/// @return {Real}
 		static GetPixel = function(_x, _y) {
 			__init();
 			if (_x >= __width || _x < 0) || (_y >= __height || _y < 0) return 0;
@@ -565,10 +566,18 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 					_result = (_b & 0x80) << 8 | (_g & 0x80) << 4 | (_r & 0x80);
 				break;
 				case surface_rgba16float:
-				case surface_r16float: 
 				case surface_rgba32float: 
-				case surface_r32float: 
 					__CanvasError("GetPixel() does not support " + string(__CanvasSurfFormat(__format)) + ". Please use GetPixelArray()");
+				break;
+				case surface_r32float: 
+					_col = buffer_peek(__buffer, (_x + (_y * __width)) * __bufferSize, buffer_f32);
+					_r = _col;
+					_result = _r;
+				break;
+				case surface_r16float: 
+					_col = buffer_peek(__buffer, (_x + (_y * __width)) * __bufferSize, buffer_f16);
+					_r = _col;
+					_result = _r;
 				break;
 			}
 			return _result;
@@ -635,6 +644,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			return self;
 		}
 		
+		/// @return {Constant.SurfaceFormatType}
 		static GetFormat = function() {
 			return __format;		
 		}

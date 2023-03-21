@@ -1,4 +1,5 @@
 /// @ignore
+/* feather ignore all */
 function __CanvasCleanupQueue() {
 			var _size = ds_list_size(GCList);
 			var _totalTime = get_timer() + 5000;

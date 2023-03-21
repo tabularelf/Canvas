@@ -1,4 +1,5 @@
 /// @ignore
+/* feather ignore all */
 function __CanvasGC() {
 	static _i = 0;
 	var _size = ds_list_size(refList);
@@ -11,8 +12,7 @@ function __CanvasGC() {
 			ds_list_add(GCList, _contents);
 			
 			ds_list_delete(refList, _i);
-			--_i;
-			_size--;
+			--_size;
 			if (_size == 0) exit;
 		}
 		_i = (_i+1) % _size;
