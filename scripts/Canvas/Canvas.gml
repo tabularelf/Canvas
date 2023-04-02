@@ -17,7 +17,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		__status = CanvasStatus.NO_DATA;
 		__writeToCache = true;
 		__index = -1;
-		__useDepth = surface_get_depth_disable();
+		__depthDisabled = surface_get_depth_disable();
 		// Add to refList
 		__refContents = {
 			buff: __buffer,
@@ -30,13 +30,9 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		
 		ds_list_add(__sys.refList, [_weakRef, __refContents]);
 		
-		if (!surface_format_is_supported(_format)) {
-			__CanvasError("Surface format " + string(__CanvasSurfFormat(_format)) + " not supported on this platform!");
-		}
-		
-		__updateFormat(_format);
+		__UpdateFormat(_format);
 		if (_forceInit) {
-			__init();
+			__Init();
 			CheckSurface();
 			__status = CanvasStatus.HAS_DATA;
 		}
@@ -71,7 +67,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		static Finish = function() {
 			surface_reset_target();
 			__index = -1;
-			__init();
+			__Init();
 			
 			if (__writeToCache) {
 				__UpdateCache();
@@ -130,7 +126,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 				__CanvasError("Surface " + string(_surfID) + " doesn't exist!");	
 			}
 			
-			__init();
+			__Init();
 			CheckSurface();
 			
 			var _currentlyWriting = false;
@@ -147,7 +143,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 				Resize(_x + _width, _y + _height, true);	
 			}
 			
-			__init();
+			__Init();
 			CheckSurface();
 			
 			surface_copy(__surface, _x, _y, _surfID);
@@ -178,7 +174,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 				__CanvasError("Surface " + string(_surfID) + " doesn't exist!");	
 			}
 			
-			__init();
+			__Init();
 			CheckSurface();
 			
 			var _currentlyWriting = false;
@@ -248,7 +244,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 
 		/// @param {Real} width new width
 		/// @param {Real} height new height
-		/// @param {Bool} keepData 
+		/// @param {Bool} [keepData]
 		static Resize = function(_width, _height, _keepData = false) {
 			
 			if (__width == _width) && (__height == _height) return self;
@@ -274,7 +270,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 				}
 			}
 			
-			__init();
+			__Init();
 			CheckSurface();
 			
 			if (_keepData) && (!__CANVAS_ON_WEB) && (!__isAppSurf) {
@@ -286,7 +282,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 					Finish();
 				}
 				
-				var _tempSurf = surface_create(_width, _height);
+				var _tempSurf = surface_create(_width, _height, __format);
 				surface_copy(_tempSurf, 0, 0, __surface);
 				surface_resize(__surface, _width, _height);
 				buffer_resize(__buffer, _width*_height*__format);
@@ -319,13 +315,17 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			CheckSurface();
 			return __surface;
 		}
+			
+		static GetSize = function() {
+			return __width * __height * __bufferSize;	
+		}
 		
 		/// @param {Bool} forceCompress 
 		static GetBufferContents = function(_forceCompress = false) {
 			if (_forceCompress) {
 				if (buffer_exists(__buffer)) {
 					var _cbuff = buffer_compress(__buffer, 0, buffer_get_size(__buffer));
-					var _buff = __copyBufferContents(_cbuff, true);
+					var _buff = __CopyBufferContents(_cbuff, true);
 					buffer_delete(_cbuff);
 					return _buff;
 				}
@@ -336,7 +336,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 				return -1;	
 			}
 			
-			var _buffer = __copyBufferContents(_bufferToCopy);
+			var _buffer = __CopyBufferContents(_bufferToCopy);
 			return _buffer;
 		}
 		
@@ -368,7 +368,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 					exit;
 				}
 				Free();
-				__updateFormat(_format);
+				__UpdateFormat(_format);
 			}
 			
 			if ((__width != _width) || (__height != _height)) {
@@ -397,7 +397,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 				case CanvasStatus.HAS_DATA:
 					buffer_delete(__buffer);
 					__buffer = _buff;
-					__refreshSurface();
+					__RefreshSurface();
 				break;
 				
 				case CanvasStatus.HAS_DATA_CACHED:
@@ -418,14 +418,15 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			return __status;	
 		}
 		
-		/// @param {Bool} DepthEnabled
-		static SetDepthEnabled = function(_bool) {
-			__useDepth = !_bool;	
+		/// @param {Bool} DepthDisabled
+		static SetDepthDisabled = function(_bool) {
+			__depthDisabled = _bool;	
+			if (IsAvailable()) __RefreshSurface();
 			return self;
 		}
 		
-		static GetDepthEnabled = function() {
-			return __useDepth;	
+		static GetDepthDisabled = function() {
+			return __depthDisabled;	
 		}
 		
 		static Cache = function() {
@@ -504,7 +505,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			switch(GetStatus()) {
 				case CanvasStatus.NO_DATA:
 				case CanvasStatus.HAS_DATA_CACHED:
-					__init();
+					__Init();
 					CheckSurface();
 				case CanvasStatus.HAS_DATA:
 					__UpdateCache();
@@ -535,7 +536,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		/// @param {Real} y 
 		/// @return {Real}
 		static GetPixel = function(_x, _y) {
-			__init();
+			__Init();
 			if (_x >= __width || _x < 0) || (_y >= __height || _y < 0) return 0;
 			var _r, _g, _b, _result, _col;
 			
@@ -586,7 +587,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		/// @param {Real} x 
 		/// @param {Real} y 
 		static GetPixelArray = function(_x, _y) {
-			__init();
+			__Init();
 			if (_x >= __width || _x < 0) || (_y >= __height || _y < 0) return [0,0,0,0];
 			var _r = 0, _g = 0, _b = 0, _a = 0, _col;
 			
@@ -633,7 +634,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		}
 		
 		static Clear = function() {
-			__init();
+			__Init();
 			CheckSurface();
 			
 			surface_set_target(__surface);	
@@ -784,7 +785,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 					exit;
 				}
 				Free();
-				__updateFormat(surface_rgba8unorm);
+				__UpdateFormat(surface_rgba8unorm);
 			}
 			
 			var _size = buffer_get_size(_cvBuff);
@@ -805,7 +806,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 				case CanvasStatus.HAS_DATA:
 					buffer_delete(__buffer);
 					__buffer = _buff;
-					__refreshSurface();
+					__RefreshSurface();
 				break;
 				
 				case CanvasStatus.HAS_DATA_CACHED:
@@ -822,12 +823,12 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			return self;
 		}
 		
-		static __refreshSurface = function() {
+		static __RefreshSurface = function() {
 			surface_free(__surface);
 			CheckSurface();
 		}
 			
-		static __copyBufferContents = function(_bufferToCopy, _forceCompressed = false) {
+		static __CopyBufferContents = function(_bufferToCopy, _forceCompressed = false) {
 			// Send copied buffer as a result
 			var _size = buffer_get_size(_bufferToCopy);
 			var _isCompressed = (_forceCompressed ? true: (GetStatus() == CanvasStatus.HAS_DATA_CACHED ? true : false));
@@ -850,7 +851,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 					exit;
 				}
 				var _oldDepthDisabled = surface_get_depth_disable();
-				surface_depth_disable(__useDepth);
+				surface_depth_disable(__depthDisabled);
 				__surface = surface_create(__width, __height, __format);
 				surface_depth_disable(_oldDepthDisabled);
 				__refContents.surf = __surface;
@@ -869,7 +870,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			}	
 		}
 			
-		static __init = function() {
+		static __Init = function() {
 			if (!buffer_exists(__buffer)) {
 				if (buffer_exists(__cacheBuffer)) {
 					// Lets decompress it
@@ -881,8 +882,12 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			}
 		}
 		
-		static __updateFormat = function(_format) {
+		static __UpdateFormat = function(_format) {
 			__format = _format;
+			if (!surface_format_is_supported(_format)) {
+				__CanvasError("Surface format " + string(__CanvasSurfFormat(_format)) + " not supported on this platform!");
+			}
+			
 			switch(_format) {
 				case surface_rgba8unorm: __bufferSize = 4; break;
 				case surface_r8unorm: __bufferSize = 1; break;

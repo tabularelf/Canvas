@@ -10,7 +10,7 @@ function __CanvasAppSurf() {
 		}
 		
 		__status = CanvasStatus.HAS_DATA;
-		__init();
+		__Init();
 		UpdateCache();
 		
 		time_source_start(time_source_create(time_source_global, 1, time_source_units_frames, _func, [], -1));

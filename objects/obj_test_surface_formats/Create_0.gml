@@ -1,5 +1,5 @@
 show_debug_overlay(true);
-surf = new Canvas(512, 512, false, surface_rg8unorm);
+surf = new Canvas(512, 512, false, surface_rgba32float);
 surf.Start();
 draw_set_alpha(1);
 draw_rectangle_colour(0, 0,surf.GetWidth(),surf.GetHeight(), c_red, c_red, c_red, c_red, false);
