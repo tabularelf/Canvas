@@ -633,12 +633,12 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			return [_r, _g, _b, _a];
 		}
 		
-		static Clear = function() {
+		static Clear = function(_color = c_black, _alpha = 0) {
 			__Init();
 			CheckSurface();
 			
 			surface_set_target(__surface);	
-			draw_clear_alpha(c_black, 0);
+			draw_clear_alpha(_color, _alpha);
 			surface_reset_target();
 			
 			buffer_fill(__buffer, 0, buffer_u8, 0, buffer_get_size(__buffer));
