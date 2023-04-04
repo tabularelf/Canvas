@@ -641,7 +641,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			draw_clear_alpha(_color, _alpha);
 			surface_reset_target();
 			
-			buffer_fill(__buffer, 0, buffer_u8, 0, buffer_get_size(__buffer));
+			__UpdateCache();
 			return self;
 		}
 		
