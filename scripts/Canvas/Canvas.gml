@@ -88,7 +88,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 				__CanvasError("Canvas " + string(_canvas) + " is not a valid Canvas instance!");
 			}
 			
-			__validateContents();
+			__ValidateContents();
 			CopySurface(_canvas.GetSurfaceID(), _x, _y, _forceResize, _updateCache);
 			return self;
 		}
@@ -107,7 +107,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 				__CanvasError("Canvas " + string(_canvas) + " is not a valid Canvas instance!");	
 			}
 			
-			__validateContents();
+			__ValidateContents();
 			CopySurfacePart(_canvas.GetSurfaceID(), _x, _y, _xs, _ys, _ws, _hs, _forceResize, _updateCache);
 			return self;
 		}
@@ -653,7 +653,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		/// @param {Real} x 
 		/// @param {Real} y 
 		static Draw = function(_x, _y) {
-			__validateContents();
+			__ValidateContents();
 			CheckSurface();
 			draw_surface(__surface, _x, _y);
 		}
@@ -666,7 +666,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		/// @param {Real} col
 		/// @param {Real} alpha
 		static DrawExt = function(_x, _y, _xscale, _yscale, _rot, _col, _alpha) {
-			__validateContents();
+			__ValidateContents();
 			CheckSurface();
 			draw_surface_ext(__surface, _x, _y, _xscale, _yscale, _rot, _col, _alpha);
 		}
@@ -674,7 +674,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		/// @param {Real} x 
 		/// @param {Real} y 
 		static DrawTiled = function(_x, _y) {
-			__validateContents();
+			__ValidateContents();
 			CheckSurface();
 			draw_surface_tiled(__surface, _x, _y);
 		}
@@ -686,7 +686,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		/// @param {Real} colour
 		/// @param {Real} alpha
 		static DrawTiledExt = function(_x, _y, _xscale, _yscale, _col, _alpha) {
-			__validateContents();
+			__ValidateContents();
 			CheckSurface();
 			draw_surface_tiled_ext(__surface, _x, _y, _xscale, _yscale, _col, _alpha);
 		}
@@ -698,7 +698,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		/// @param {Real} x 
 		/// @param {Real} y 
 		static DrawPart = function(_left, _top, _width, _height, _x, _y) {
-			__validateContents();
+			__ValidateContents();
 			CheckSurface();
 			draw_surface_part(__surface, _left, _top, _width, _height, _x, _y);
 		}
@@ -714,7 +714,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		/// @param {Real} colour
 		/// @param {Real} alpha
 		static DrawPartExt = function(_left, _top, _width, _height, _x, _y, _xscale, _yscale, _col, _alpha) {
-			__validateContents();
+			__ValidateContents();
 			CheckSurface();
 			draw_surface_part_ext(__surface, _left, _top, _width, _height, _x, _y, _xscale, _yscale, _col, _alpha);
 		}
@@ -724,7 +724,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		/// @param {Real} width
 		/// @param {Real} height 
 		static DrawStretched = function(_x, _y, _width, _height) {
-			__validateContents();
+			__ValidateContents();
 			CheckSurface();
 			draw_surface_stretched(__surface, _x, _y, _width, _height);
 		}
@@ -736,7 +736,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		/// @param {Real} colour
 		/// @param {Real} alpha
 		static DrawStretchedExt = function(_x, _y, _width, _height, _col, _alpha) {
-			__validateContents();
+			__ValidateContents();
 			CheckSurface();
 			draw_surface_stretched_ext(__surface, _x, _y, _width, _height, _col, _alpha);
 		}
@@ -756,7 +756,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 		/// @param {Real} colour4
 		/// @param {Real} alpha
 		static DrawGeneral = function(_left, _top, _width, _height, _x, _y, _xscale, _yscale, _rot, _col1, _col2, _col3, _col4, _alpha) {
-			__validateContents();
+			__ValidateContents();
 			CheckSurface();
 			draw_surface_general(__surface, _left, _top, _width, _height, _x, _y, _xscale, _yscale, _rot, _col1, _col2, _col3, _col4, _alpha);
 		}
@@ -864,7 +864,7 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 			__status = CanvasStatus.HAS_DATA;	
 		}
 			
-		static __validateContents = function() {
+		static __ValidateContents = function() {
 			if (!IsAvailable()) {
 				__CanvasError("Canvas has no data or in use!");		
 			}	
