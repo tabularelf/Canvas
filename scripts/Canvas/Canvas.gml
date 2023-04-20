@@ -225,6 +225,10 @@ function Canvas(_width, _height, _forceInit = false, _format = surface_rgba8unor
 				__surface = -1;
 			}
 			
+			__refContents.buff = -1;
+			__refContents.cbuff = -1;
+			__refContents.surf = -1;
+			
 			if (!__isAppSurf) __status = CanvasStatus.NO_DATA;
 		}
 		
