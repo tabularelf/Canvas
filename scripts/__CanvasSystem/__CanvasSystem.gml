@@ -5,6 +5,8 @@ function __CanvasSystem() {
 		GCList = ds_list_create();
 		time_source_start(time_source_create(time_source_global, 1, time_source_units_frames, method(self, __CanvasGC), [], -1));
 		time_source_start(time_source_create(time_source_global, 15, time_source_units_frames, method(self, __CanvasCleanupQueue), [], -1));
+		var _version = __CanvasGMVersion();
+		supportsFormats = (_version.major >= 2024) || ((_version.major == 2023) && (_version.minor >= 2));
 	})();
 	
 	return _inst;
