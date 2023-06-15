@@ -908,11 +908,11 @@ function Canvas(_width, _height, _forceInit = false, _format = undefined) constr
 				
 				if (__sys.supportsFormats) {
 					__format = _format ?? surface_rgba8unorm;
-					if (!surface_format_is_supported(_format)) {
-						__CanvasError("Surface format " + string(__CanvasSurfFormat(_format)) + " not supported on this platform!");
+					if (!surface_format_is_supported(__format)) {
+						__CanvasError("Surface format " + string(__CanvasSurfFormat(__format)) + " not supported on this platform!");
 					}
 					
-					switch(_format) {
+					switch(__format) {
 						case surface_rgba8unorm: __bufferSize = 4; break;
 						case surface_r8unorm: __bufferSize = 1; break;
 						case surface_rg8unorm: __bufferSize = 2; break;
@@ -921,7 +921,7 @@ function Canvas(_width, _height, _forceInit = false, _format = undefined) constr
 						case surface_r16float: __bufferSize = 2; break;
 						case surface_rgba32float: __bufferSize = 16; break;
 						case surface_r32float: __bufferSize = 4; break;
-						default: __CanvasError("Invalid surface format! Got " + string(_format)); break;
+						default: __CanvasError("Invalid surface format! Got " + string(__format)); break;
 					}	
 				}
 		}
