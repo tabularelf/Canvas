@@ -3,4 +3,4 @@ Non-volatile surfaces for GameMaker 2023+
 
 Documentation: https://tabularelf.com/docs/canvas/
 
-Jopin the GameMaker Kitchen Discord server! https://discord.gg/8krYCqr
+Join the GameMaker Kitchen Discord server to discuss about Canvas! https://discord.gg/8krYCqr
