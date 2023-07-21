@@ -1,0 +1,6 @@
+.vs/
+run.bat
+node_modules/
+package.json
+package-lock.json
+.docsifytopdfrc.js
