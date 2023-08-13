@@ -1,11 +1,11 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "Canvas",
+  "name": "__CanvasSurfaceCreate",
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Canvas",
-    "path": "folders/Canvas.yy",
+    "name": "System",
+    "path": "folders/Canvas/System.yy",
   },
 }

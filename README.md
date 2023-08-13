@@ -1,4 +1,4 @@
-# Canvas v2.0.1
+# Canvas v2.1.0
 Non-volatile surfaces for GameMaker 2023+
 
 Documentation: https://tabularelf.com/docs/canvas/
