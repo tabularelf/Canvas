@@ -15,9 +15,15 @@ function Canvas(_width, _height, _forceInit = false, _format = undefined) constr
 		__buffer = -1;
 		__cacheBuffer = -1;
 		__status = CanvasStatus.NO_DATA;
-		__writeToCache = true;
+		__writeToCache = __CANVAS_AUTO_WRITE_TO_CACHE;
 		__index = -1;
-		__depthDisabled = surface_get_depth_disable();
+		
+		switch(__CANVAS_SURFACE_DEPTH_MODE) {
+			case 0: __depthDisabled = surface_get_depth_disable(); break;	
+			case 1: __depthDisabled = false; break;
+			case 2: __depthDisabled = true; break;
+		}
+		
 		// Add to refList
 		__refContents = {
 			buff: __buffer,

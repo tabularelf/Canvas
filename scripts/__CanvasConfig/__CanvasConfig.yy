@@ -1,7 +1,7 @@
 {
   "resourceType": "GMScript",
   "resourceVersion": "1.0",
-  "name": "CanvasGetAppSurf",
+  "name": "__CanvasConfig",
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
