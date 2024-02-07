@@ -6,8 +6,8 @@ Canvas is in it's simplest description, a non-volatile surface constructor. Canv
 The benefit from this is that you do not need to redraw or recreate the underlying surface each time, as this is premanaged for you. The buffer copy contains a backup of the entire surface per `.Finish()` call (unless auto writing to cache is disabled via `.SetWriteToCache()`) or per `.UpdateCache()` call.
 
 ## Installing
-1. Download Canvas's .yymp from [releases!](https://github.com/tabularelf/Canvas/releases)
-2. With your GameMaker Project, drag the .yymp (or at the top goto Tools -> Import Local Package)
+1. Download Canvas's .yymps from [releases!](https://github.com/tabularelf/Canvas/releases)
+2. With your GameMaker Project, drag the .yymps (or at the top goto Tools -> Import Local Package)
 3. Press "Add All" and press "Import".
 
 ## Updating to a new version
