@@ -2,7 +2,7 @@
 <center>
 <p>Non-volatile surfaces for GameMaker.<br>
 
-[Download the latest .yymp here!](https://github.com/tabularelf/Canvas/releases)
+[Download the latest .yymps here!](https://github.com/tabularelf/Canvas/releases)
 
 </center>
 
