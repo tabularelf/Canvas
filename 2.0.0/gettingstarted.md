@@ -7,7 +7,7 @@ The benefit from this is that you do not need to redraw or recreate the underlyi
 
 ## Installing
 1. Download Canvas's .yymps from [releases!](https://github.com/tabularelf/Canvas/releases)
-2. With your GameMaker Project, drag the .yymps (or at the top goto Tools -> Import Local Package)
+2. With your GameMaker Project, drag the .yymps (or at the top go to Tools -> Import Local Package)
 3. Press "Add All" and press "Import".
 
 ## Updating to a new version
