@@ -1,4 +1,5 @@
 /// @ignore
+/// feather ignore all
 function __CanvasSystem() {
 	static _inst = new (function() constructor {
 		if (__CANVAS_ENABLE_GARBAGE_COLLECTOR) {
