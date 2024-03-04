@@ -12,7 +12,6 @@
     {"id":{"name":"obj_test_copysurface","path":"objects/obj_test_copysurface/obj_test_copysurface.yy",},"order":6,},
     {"id":{"name":"obj_test_resize","path":"objects/obj_test_resize/obj_test_resize.yy",},"order":5,},
     {"id":{"name":"__CanvasSystem","path":"scripts/__CanvasSystem/__CanvasSystem.yy",},"order":2,},
-    {"id":{"name":"__CanvasGMVersion","path":"scripts/__CanvasGMVersion/__CanvasGMVersion.yy",},"order":7,},
     {"id":{"name":"__CanvasTrace","path":"scripts/__CanvasTrace/__CanvasTrace.yy",},"order":6,},
     {"id":{"name":"__CanvasCleanupQueue","path":"scripts/__CanvasCleanupQueue/__CanvasCleanupQueue.yy",},"order":4,},
     {"id":{"name":"__CanvasGC","path":"scripts/__CanvasGC/__CanvasGC.yy",},"order":3,},
@@ -57,6 +56,6 @@
   ],
   "IncludedFiles": [],
   "MetaData": {
-    "IDEVersion": "2022.0.1.31",
+    "IDEVersion": "2022.0.2.51",
   },
 }
