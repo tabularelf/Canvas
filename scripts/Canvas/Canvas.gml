@@ -94,7 +94,13 @@ function Canvas(_width, _height, _forceInit = false, _format = undefined) constr
 		/// @param {Bool} updateCache
 		static CopyCanvas = function(_canvas, _x, _y, _forceResize = false, _updateCache = __writeToCache) {
 			if (!CanvasIsCanvas(_canvas)) {
-				__CanvasError("Canvas " + string(_canvas) + " is not a valid Canvas instance!");
+				return __CanvasError("Canvas " + string(_canvas) + " is not a valid Canvas instance!");
+			}
+			
+			if (GetStatus() == CanvasStatus.NO_DATA) {
+				__Init();
+				CheckSurface();
+				__status = CanvasStatus.HAS_DATA;
 			}
 			
 			__ValidateContents();
@@ -114,6 +120,12 @@ function Canvas(_width, _height, _forceInit = false, _format = undefined) constr
 		static CopyCanvasPart = function(_canvas, _x, _y, _xs, _ys, _ws, _hs, _forceResize = false, _updateCache = __writeToCache) {
 			if (!CanvasIsCanvas(_canvas)) {
 				__CanvasError("Canvas " + string(_canvas) + " is not a valid Canvas instance!");	
+			}
+			
+			if (GetStatus() == CanvasStatus.NO_DATA) {
+				__Init();
+				CheckSurface();
+				__status = CanvasStatus.HAS_DATA;
 			}
 			
 			__ValidateContents();
