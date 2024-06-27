@@ -18,6 +18,8 @@ function Canvas(_width, _height, _forceInit = false, _format = undefined) constr
 		__writeToCache = __CANVAS_AUTO_WRITE_TO_CACHE;
 		__index = -1;
 		__isAppSurf = false;
+		__CallBackCanvasCacheUpdated = undefined;
+		__CallbackCanvasSurfaceUpdated = undefined;
 		
 		switch(__CANVAS_SURFACE_DEPTH_MODE) {
 			case 0: __depthDisabled = surface_get_depth_disable(); break;	
@@ -48,6 +50,18 @@ function Canvas(_width, _height, _forceInit = false, _format = undefined) constr
 		#endregion
 		
 		#region Default Methods
+		
+		/// @param {Function, Undefined} callback
+		static SetCallbackCacheUpdated = function(_callback) {
+			__CallBackCanvasCacheUpdated = _callback;
+			return self;
+		}
+		
+		/// @param {Function, Undefined} callback
+		static SetCallbackUpdated = function(_callback) {
+			__CallbackCanvasSurfaceUpdated = _callback;
+			return self;
+		}
 		
 		/// @param {Real} targetID use set_target_ext? (default: no) - any value != -1 will use set_target_ext
 		static Start = function(_targetID = -1) {
@@ -83,6 +97,7 @@ function Canvas(_width, _height, _forceInit = false, _format = undefined) constr
 			}
 			
 			__status = CanvasStatus.HAS_DATA;
+			__SurfaceUpdated();
 			
 			return self;
 		}
@@ -177,6 +192,7 @@ function Canvas(_width, _height, _forceInit = false, _format = undefined) constr
 			}
 			
 			__status = CanvasStatus.HAS_DATA;
+			__SurfaceUpdated();
 			
 			return self;
 		}
@@ -222,6 +238,7 @@ function Canvas(_width, _height, _forceInit = false, _format = undefined) constr
 			}
 			
 			__status = CanvasStatus.HAS_DATA;
+			__SurfaceUpdated();
 			
 			return self;
 		}
@@ -436,6 +453,7 @@ function Canvas(_width, _height, _forceInit = false, _format = undefined) constr
 			__refContents.cbuff = __cacheBuffer;
 			
 			buffer_seek(_cvBuff, buffer_seek_start, _oldTell);
+			__CacheUpdated();
 			return self;
 		}
 		
@@ -900,9 +918,23 @@ function Canvas(_width, _height, _forceInit = false, _format = undefined) constr
 		}
 		
 		static __UpdateCache = function() {
-			if (!surface_exists(__surface)) exit;
+			if (!surface_exists(__surface)) return;
 			buffer_get_surface(__buffer, __surface, 0);
 			__status = CanvasStatus.HAS_DATA;	
+			
+			__CacheUpdated();
+		}
+		
+		static __SurfaceUpdated = function() {
+			if (__CallbackCanvasSurfaceUpdated != undefined) {
+				__CallbackCanvasSurfaceUpdated(self);	
+			}
+		}
+		
+		static __CacheUpdated = function() {
+			if (__CallBackCanvasCacheUpdated != undefined) {
+				__CallBackCanvasCacheUpdated(self);	
+			}	
 		}
 			
 		static __ValidateContents = function() {
@@ -923,7 +955,7 @@ function Canvas(_width, _height, _forceInit = false, _format = undefined) constr
 			}
 		}
 		
-			static __UpdateFormat = function(_format) {
+		static __UpdateFormat = function(_format) {
 				__format = _format ?? 0;
 				__bufferSize = 4;
 				
