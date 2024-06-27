@@ -58,7 +58,7 @@ function Canvas(_width, _height, _forceInit = false, _format = undefined) constr
 		}
 		
 		/// @param {Function, Undefined} callback
-		static SetCallbackUpdated = function(_callback) {
+		static SetCallbackSurfaceUpdated = function(_callback) {
 			__CallbackCanvasSurfaceUpdated = _callback;
 			return self;
 		}
@@ -692,7 +692,7 @@ function Canvas(_width, _height, _forceInit = false, _format = undefined) constr
 			return [_r, _g, _b, _a];
 		}
 		
-		static Clear = function(_color = c_black, _alpha = 0) {
+		static Clear = function(_color = c_black, _alpha = 0, _updateCache = true) {
 			__Init();
 			CheckSurface();
 			
@@ -700,7 +700,7 @@ function Canvas(_width, _height, _forceInit = false, _format = undefined) constr
 			draw_clear_alpha(_color, _alpha);
 			surface_reset_target();
 			
-			__UpdateCache();
+			if(_updateCache) __UpdateCache();
 			return self;
 		}
 		
