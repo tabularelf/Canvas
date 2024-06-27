@@ -692,6 +692,9 @@ function Canvas(_width, _height, _forceInit = false, _format = undefined) constr
 			return [_r, _g, _b, _a];
 		}
 		
+		/// @param {Any} colour
+		/// @param {Real} alpha
+		/// @param {Bool} updateCache
 		static Clear = function(_color = c_black, _alpha = 0, _updateCache = true) {
 			__Init();
 			CheckSurface();

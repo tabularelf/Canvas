@@ -9,7 +9,6 @@
     {"id":{"name":"obj_test","path":"objects/obj_test/obj_test.yy",},"order":2,},
     {"id":{"name":"__CanvasError","path":"scripts/__CanvasError/__CanvasError.yy",},"order":0,},
     {"id":{"name":"__CanvasSurfaceCreate","path":"scripts/__CanvasSurfaceCreate/__CanvasSurfaceCreate.yy",},"order":8,},
-    {"id":{"name":"obj_test_copycanvas","path":"objects/obj_test_copycanvas/obj_test_copycanvas.yy",},"order":13,},
     {"id":{"name":"obj_test_copysurface","path":"objects/obj_test_copysurface/obj_test_copysurface.yy",},"order":6,},
     {"id":{"name":"obj_test_resize","path":"objects/obj_test_resize/obj_test_resize.yy",},"order":5,},
     {"id":{"name":"__CanvasSystem","path":"scripts/__CanvasSystem/__CanvasSystem.yy",},"order":2,},
