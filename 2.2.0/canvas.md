@@ -129,7 +129,7 @@ Returns: `self`.
 |`ws`|`Real`| Width that you want to copy from source.|
 |`hs`|`Real`| Height that you want to copy from source.|
 |`forceResize`|`Boolean`| Whether to forcefully resize the surface or not. Default is `false`.|
-|`updateCache`|`Boolean`| Whether to forcefully update the cache or not. Default is state of cache writing as per `.SetWriteToCache()`.|
+|`updateCache`|`Boolean`| Whether to forcefully update the cache or not. Default is state of cache writing as per `..SetWriteToCache()`.|
 
 Same as `.CopySurfacePart()`, but copies a Canvas surface instead.
 
@@ -165,7 +165,7 @@ Returns: `Boolean`.
 
 Returns `true` if the Canvas has some kind of data, and isn't in use. Or `false`.
 
-### `.Clear([colour], [alpha])`<br>
+### `.Clear([colour], [alpha], [updateCache])`<br>
 
 Returns: `self`.
 
@@ -173,6 +173,7 @@ Returns: `self`.
 |---|---|---|
 |`Colour`|`Real`| Sets the colour to clear with. Default is `c_black`.|
 |`Alpha`|`Real`| Sets the alpha to clear with. Default is `0`.|
+|`updateCache`|`Bool`| Whether the cache should be updated or not. Defaults to the state set by `.UpdateCache()`.|
 
 Clears the surface and buffer contents, overwriting it with the contents of the colour and alpha specified.
 
