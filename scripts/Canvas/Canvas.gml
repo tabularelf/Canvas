@@ -20,6 +20,7 @@ function Canvas(_width, _height, _forceInit = false, _format = undefined) constr
 		__isAppSurf = false;
 		__CallBackCanvasCacheUpdated = undefined;
 		__CallbackCanvasSurfaceUpdated = undefined;
+		__CallbackCanvasSurfaceRestored = undefined;
 		
 		switch(__CANVAS_SURFACE_DEPTH_MODE) {
 			case 0: __depthDisabled = surface_get_depth_disable(); break;	
@@ -60,6 +61,12 @@ function Canvas(_width, _height, _forceInit = false, _format = undefined) constr
 		/// @param {Function, Undefined} callback
 		static SetCallbackSurfaceUpdated = function(_callback) {
 			__CallbackCanvasSurfaceUpdated = _callback;
+			return self;
+		}
+		
+		/// @param {Function, Undefined} callback
+		static SetCallbackSurfaceRestored = function(_callback) {
+			__CallbackCanvasSurfaceRestored = _callback;
 			return self;
 		}
 		
@@ -278,6 +285,9 @@ function Canvas(_width, _height, _forceInit = false, _format = undefined) constr
 						Restore();	
 					}
 					if (surface_exists(__surface)) buffer_set_surface(__buffer,__surface, 0);
+					if (surface_exists(__surface)) {
+						__SurfaceRestored();
+					}
 				}
 			} 
 			return self;
@@ -937,6 +947,12 @@ function Canvas(_width, _height, _forceInit = false, _format = undefined) constr
 		static __CacheUpdated = function() {
 			if (__CallBackCanvasCacheUpdated != undefined) {
 				__CallBackCanvasCacheUpdated(self);	
+			}	
+		}
+		
+		static __SurfaceRestored = function() {
+			if (__CallbackCanvasSurfaceRestored != undefined) {
+				__CallbackCanvasSurfaceRestored(self);	
 			}	
 		}
 			
