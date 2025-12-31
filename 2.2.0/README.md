@@ -1,4 +1,4 @@
-﻿# Home
+# Home
 <center>
 <p>Non-volatile surfaces for GameMaker.<br>
 
@@ -12,7 +12,7 @@ Canvas is a non-volatile surface solution for GameMaker, by keeping buffer copie
 
 # Features
 - Copy of surface contents between each `.Finish()` and `.UpdateCache()` call.
-- Built-in low performance garbage collector for each Canvas instance.
+- Built-in high performance garbage collector for each Canvas instance.
 - Control over when and where the buffer caching happens.
 - Saving and loading buffer versions of surfaces.
 - Fetch pixel data from the buffer cache (including the new surface formats).
